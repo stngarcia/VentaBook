@@ -27,16 +27,10 @@
                         <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
                         <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Id"/>
-                            </f:facet>
+                        <p:column headerText="Id" sortBy="#{item.idAutor}" styleClass="header">
                             <h:outputText value="#{item.idAutor}"/>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Nombre autor"/>
-                            </f:facet>
+                        <p:column headerText="Nombre autor" sortBy="#{item.nombreAutor}" filterBy="#{item.nombreAutor}" styleClass="header">
                             <h:outputText value="#{item.nombreAutor}"/>
                         </p:column>
                         <f:facet name="footer">

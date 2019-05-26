@@ -3,29 +3,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition>
 
-        <p:dialog id="UsuarioViewDlg" widgetVar="UsuarioViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewUsuarioTitle}">
+        <p:dialog id="UsuarioViewDlg" widgetVar="UsuarioViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Ver información de usuario.">
             <h:form id="UsuarioViewForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{usuarioController.selected != null}">
-                        <h:outputText value="#{bundle.ViewUsuarioLabel_idUsuario}"/>
+                        <h:outputText value="Id"/>
                         <h:outputText value="#{usuarioController.selected.idUsuario}" title="#{bundle.ViewUsuarioTitle_idUsuario}"/>
-                        <h:outputText value="#{bundle.ViewUsuarioLabel_nombreUsuario}"/>
+                        <h:outputText value="Nombre usuario"/>
                         <h:outputText value="#{usuarioController.selected.nombreUsuario}" title="#{bundle.ViewUsuarioTitle_nombreUsuario}"/>
-                        <h:outputText value="#{bundle.ViewUsuarioLabel_rutUsuario}"/>
+                        <h:outputText value="Rut usuario"/>
                         <h:outputText value="#{usuarioController.selected.rutUsuario}" title="#{bundle.ViewUsuarioTitle_rutUsuario}"/>
-                        <h:outputText value="#{bundle.ViewUsuarioLabel_contrasenaUsuario}"/>
+                        <h:outputText value="Contraseña"/>
                         <h:outputText value="#{usuarioController.selected.contrasenaUsuario}" title="#{bundle.ViewUsuarioTitle_contrasenaUsuario}"/>
-                        <h:outputText value="#{bundle.ViewUsuarioLabel_idSucursal}"/>
-                        <h:outputText value="#{usuarioController.selected.idSucursal}" title="#{bundle.ViewUsuarioTitle_idSucursal}"/>
-                        <h:outputText value="#{bundle.ViewUsuarioLabel_idTipo}"/>
-                        <h:outputText value="#{usuarioController.selected.idTipo}" title="#{bundle.ViewUsuarioTitle_idTipo}"/>
+                        <h:outputText value="Sucursal"/>
+                        <h:outputText value="#{usuarioController.selected.idSucursal.nombreSucursal}" title="#{bundle.ViewUsuarioTitle_idSucursal}"/>
+                        <h:outputText value="Tipo de usuario"/>
+                        <h:outputText value="#{usuarioController.selected.idTipo.nombreTipo}" title="#{bundle.ViewUsuarioTitle_idTipo}"/>
                     </p:panelGrid>
-                    <p:commandButton value="#{bundle.Close}" onclick="UsuarioViewDialog.hide()"/>
+                    <p:commandButton value="Cerrar" onclick="UsuarioViewDialog.hide()"/>
                 </h:panelGroup>
             </h:form>
         </p:dialog>

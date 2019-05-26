@@ -24,6 +24,7 @@
                         <p:inputText id="precioLibro" value="#{libroController.selected.precioLibro}" title="#{bundle.CreateLibroTitle_precioLibro}" required="true" requiredMessage="#{bundle.CreateLibroRequiredMessage_precioLibro}"/>
                         <p:outputLabel value="Autor" for="idAutor" />
                         <p:selectOneMenu id="idAutor" value="#{libroController.selected.idAutor}" required="true" requiredMessage="#{bundle.EditLibroRequiredMessage_idAutor}">
+                            <f:selectItem itemLabel="Seleccione un autor" itemValue="" />
                             <f:selectItems value="#{autorController.itemsAvailableSelectOne}"
                                            var="idAutorItem"
                                            itemValue="#{idAutorItem}"/>

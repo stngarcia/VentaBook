@@ -27,40 +27,22 @@
                         <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
                         <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Id"/>
-                            </f:facet>
+                        <p:column headerText="Id" sortBy="#{item.idLibro}" styleClass="header">
                             <h:outputText value="#{item.idLibro}"/>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Título"/>
-                            </f:facet>
+                        <p:column headerText="Título" sortBy="#{item.tituloLibro}" filterBy="#{item.tituloLibro}" styleClass="header">
                             <h:outputText value="#{item.tituloLibro}"/>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="ISBN"/>
-                            </f:facet>
+                        <p:column headerText="ISBN" sortBy="#{item.isbnLibro}" filterBy="#{item.isbnLibro}" styleClass="header">
                             <h:outputText value="#{item.isbnLibro}"/>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Cant.Ejemplares"/>
-                            </f:facet>
+                        <p:column headerText="Cant.Ejemplares" sortBy="#{item.cantidadejemplaresLibro}" filterBy="#{item.cantidadejemplaresLibro}" styleClass="header">
                             <h:outputText value="#{item.cantidadejemplaresLibro}"/>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Precio"/>
-                            </f:facet>
+                        <p:column headerText="Precio" sortBy="#{item.precioLibro}" filterBy="#{item.precioLibro}" styleClass="header">
                             <h:outputText value="$#{item.precioLibro}"/>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Autor"/>
-                            </f:facet>
+                        <p:column headerText="Autor" sortBy="#{item.idAutor.nombreAutor}" filterBy="#{item.idAutor.nombreAutor}" styleClass="header" >
                             <h:outputText value="#{item.idAutor.nombreAutor}"/>
                         </p:column>
                         <f:facet name="footer">

@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package modelo;
-
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -25,9 +19,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-
 /**
- *
  * @author asathor
  */
 @Entity
@@ -45,7 +37,6 @@ public class Usuario implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ID_USUARIO", nullable = false, precision = 0, scale = -127)
     private BigDecimal idUsuario;
     @Basic(optional = false)
@@ -73,13 +64,12 @@ public class Usuario implements Serializable {
     private TipoUs idTipo;
 
     public Usuario() {
+        this.idUsuario = null;
     }
-
 
     public Usuario(BigDecimal idUsuario) {
         this.idUsuario = idUsuario;
     }
-
 
     public Usuario(BigDecimal idUsuario, String nombreUsuario, String rutUsuario, String contrasenaUsuario) {
         this.idUsuario = idUsuario;
@@ -88,77 +78,62 @@ public class Usuario implements Serializable {
         this.contrasenaUsuario = contrasenaUsuario;
     }
 
-
     public BigDecimal getIdUsuario() {
         return idUsuario;
     }
-
 
     public void setIdUsuario(BigDecimal idUsuario) {
         this.idUsuario = idUsuario;
     }
 
-
     public String getNombreUsuario() {
         return nombreUsuario;
     }
-
 
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
 
-
     public String getRutUsuario() {
         return rutUsuario;
     }
-
 
     public void setRutUsuario(String rutUsuario) {
         this.rutUsuario = rutUsuario;
     }
 
-
     public String getContrasenaUsuario() {
         return contrasenaUsuario;
     }
 
-
     public void setContrasenaUsuario(String contrasenaUsuario) {
         this.contrasenaUsuario = contrasenaUsuario;
     }
-
 
     @XmlTransient
     public List<Venta> getVentaList() {
         return ventaList;
     }
 
-
     public void setVentaList(List<Venta> ventaList) {
         this.ventaList = ventaList;
     }
-
 
     public Sucursal getIdSucursal() {
         return idSucursal;
     }
 
-
     public void setIdSucursal(Sucursal idSucursal) {
         this.idSucursal = idSucursal;
     }
-
 
     public TipoUs getIdTipo() {
         return idTipo;
     }
 
-
     public void setIdTipo(TipoUs idTipo) {
         this.idTipo = idTipo;
     }
-
 
     @Override
     public int hashCode() {
@@ -166,7 +141,6 @@ public class Usuario implements Serializable {
         hash += (idUsuario != null ? idUsuario.hashCode() : 0);
         return hash;
     }
-
 
     @Override
     public boolean equals(Object object) {
@@ -181,11 +155,9 @@ public class Usuario implements Serializable {
         return true;
     }
 
-
     @Override
     public String toString() {
         return this.nombreUsuario;
     }
-
 
 }

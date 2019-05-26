@@ -8,33 +8,33 @@
 
     <ui:composition>
 
-        <p:dialog id="UsuarioCreateDlg" widgetVar="UsuarioCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateUsuarioTitle}">
+        <p:dialog id="UsuarioCreateDlg" widgetVar="UsuarioCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Crear nuevo usuario.">
             <h:form id="UsuarioCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{usuarioController.selected != null}">
-                        <p:outputLabel value="#{bundle.CreateUsuarioLabel_idUsuario}" for="idUsuario" />
-                        <p:inputText id="idUsuario" value="#{usuarioController.selected.idUsuario}" title="#{bundle.CreateUsuarioTitle_idUsuario}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_idUsuario}"/>
-                        <p:outputLabel value="#{bundle.CreateUsuarioLabel_nombreUsuario}" for="nombreUsuario" />
+                        <p:outputLabel value="Nombre usuario" for="nombreUsuario" />
                         <p:inputText id="nombreUsuario" value="#{usuarioController.selected.nombreUsuario}" title="#{bundle.CreateUsuarioTitle_nombreUsuario}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_nombreUsuario}"/>
-                        <p:outputLabel value="#{bundle.CreateUsuarioLabel_rutUsuario}" for="rutUsuario" />
+                        <p:outputLabel value="Rut usuario" for="rutUsuario" />
                         <p:inputText id="rutUsuario" value="#{usuarioController.selected.rutUsuario}" title="#{bundle.CreateUsuarioTitle_rutUsuario}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_rutUsuario}"/>
-                        <p:outputLabel value="#{bundle.CreateUsuarioLabel_contrasenaUsuario}" for="contrasenaUsuario" />
+                        <p:outputLabel value="Contraseña" for="contrasenaUsuario" />
                         <p:inputText id="contrasenaUsuario" value="#{usuarioController.selected.contrasenaUsuario}" title="#{bundle.CreateUsuarioTitle_contrasenaUsuario}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_contrasenaUsuario}"/>
-                        <p:outputLabel value="#{bundle.CreateUsuarioLabel_idSucursal}" for="idSucursal" />
+                        <p:outputLabel value="Sucursal" for="idSucursal" />
                         <p:selectOneMenu id="idSucursal" value="#{usuarioController.selected.idSucursal}" required="true" requiredMessage="#{bundle.EditUsuarioRequiredMessage_idSucursal}">
+                            <f:selectItem itemLabel="Seleccione una sucursal" itemValue="" />
                             <f:selectItems value="#{sucursalController.itemsAvailableSelectOne}"
                                            var="idSucursalItem"
                                            itemValue="#{idSucursalItem}"/>
                         </p:selectOneMenu>
-                        <p:outputLabel value="#{bundle.CreateUsuarioLabel_idTipo}" for="idTipo" />
+                        <p:outputLabel value="#Tipo usuario" for="idTipo" />
                         <p:selectOneMenu id="idTipo" value="#{usuarioController.selected.idTipo}" required="true" requiredMessage="#{bundle.EditUsuarioRequiredMessage_idTipo}">
+                            <f:selectItem itemLabel="Seleccione un tipo" itemValue="" />
                             <f:selectItems value="#{tipoUsController.itemsAvailableSelectOne}"
                                            var="idTipoItem"
                                            itemValue="#{idTipoItem}"/>
                         </p:selectOneMenu>
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{usuarioController.create}" value="#{bundle.Save}" update="display,:UsuarioListForm:datalist,:growl" oncomplete="handleSubmit(args,'UsuarioCreateDialog');"/>
-                    <p:commandButton value="#{bundle.Cancel}" onclick="UsuarioCreateDialog.hide()"/>
+                    <p:commandButton actionListener="#{usuarioController.create}" value="Grabar usuario" update="display,:UsuarioListForm:datalist,:growl" oncomplete="handleSubmit(args,'UsuarioCreateDialog');"/>
+                    <p:commandButton value="Cancelar" onclick="UsuarioCreateDialog.hide()"/>
                 </h:panelGroup>
             </h:form>
         </p:dialog>
