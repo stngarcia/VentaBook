@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="LibroCreateDlg" widgetVar="LibroCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Ingresar nuevo libro.">
+            <h:form id="LibroCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{libroController.selected != null}">
+                        <p:outputLabel value="Título" for="tituloLibro" />
+                        <p:inputText id="tituloLibro" value="#{libroController.selected.tituloLibro}" title="#{bundle.CreateLibroTitle_tituloLibro}" required="true" requiredMessage="#{bundle.CreateLibroRequiredMessage_tituloLibro}"/>
+                        <p:outputLabel value="ISBN" for="isbnLibro" />
+                        <p:inputText id="isbnLibro" value="#{libroController.selected.isbnLibro}" title="#{bundle.CreateLibroTitle_isbnLibro}" required="true" requiredMessage="#{bundle.CreateLibroRequiredMessage_isbnLibro}"/>
+                        <p:outputLabel value="Sinopsis" for="sinopsisLibro" />
+                        <p:inputText id="sinopsisLibro" value="#{libroController.selected.sinopsisLibro}" title="#{bundle.CreateLibroTitle_sinopsisLibro}" />
+                        <p:outputLabel value="Cant.Ejemplares" for="cantidadejemplaresLibro" />
+                        <p:inputText id="cantidadejemplaresLibro" value="#{libroController.selected.cantidadejemplaresLibro}" title="#{bundle.CreateLibroTitle_cantidadejemplaresLibro}" required="true" requiredMessage="#{bundle.CreateLibroRequiredMessage_cantidadejemplaresLibro}"/>
+                        <p:outputLabel value="Precio" for="precioLibro" />
+                        <p:inputText id="precioLibro" value="#{libroController.selected.precioLibro}" title="#{bundle.CreateLibroTitle_precioLibro}" required="true" requiredMessage="#{bundle.CreateLibroRequiredMessage_precioLibro}"/>
+                        <p:outputLabel value="Autor" for="idAutor" />
+                        <p:selectOneMenu id="idAutor" value="#{libroController.selected.idAutor}" required="true" requiredMessage="#{bundle.EditLibroRequiredMessage_idAutor}">
+                            <f:selectItems value="#{autorController.itemsAvailableSelectOne}"
+                                           var="idAutorItem"
+                                           itemValue="#{idAutorItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{libroController.create}" value="Grabar" update="display,:LibroListForm:datalist,:growl" oncomplete="handleSubmit(args,'LibroCreateDialog');"/>
+                    <p:commandButton value="Cancelar" onclick="LibroCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/templates/templateLogin.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="Bookz - Empresa de venta de libros"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+
+            <h:form id="EstadoListForm">
+                <p:growl id="mensajes" showDetail="true" life="4000" />
+                <p:panelGrid style="margin: auto;  width:30%;">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">
+                                <h1><h:outputText value="Iniciar sesión"/></h1>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column rowspan="2" styleClass="centered">
+                            <h:graphicImage value="/resources/img/login.png"
+                                            width="75px" height="75px"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputLabel value="Rut usuario" for="UserRut"/>
+                            <h:inputText id="UserRut" 
+                                         value="#{loginController.usuario.rutUsuario}" 
+                                         required="true">
+                                <f:validator validatorId="rutValidator"/>
+                            </h:inputText>
+                            <h:message for="UserRut" style="color: red;"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Contraseña:" for="Userpassword"/>
+                            <h:inputSecret id="UserPassword" 
+                                           value="#{loginController.usuario.contrasenaUsuario}" 
+                                           required="true">
+                                <f:validator validatorId="passwordValidator"/>
+                            </h:inputSecret>
+                            <h:message for="UserPassword" style="color: red;"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet id="footer" name="footer">
+                        <p:row>
+                            <p:column />]>
+                            <p:column>
+                                <h:commandButton action="#{loginController.login()}" 
+                                                 value="Entrar"
+                                                 style="margin: auto; width: 50%"/>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </h:form>
+
+
+        </ui:define>
+    </ui:composition>
+
+</html>

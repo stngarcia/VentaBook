@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DetVentaViewDlg" widgetVar="DetVentaViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewDetVentaTitle}">
+            <h:form id="DetVentaViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{detVentaController.selected != null}">
+                        <h:outputText value="#{bundle.ViewDetVentaLabel_cantidad}"/>
+                        <h:outputText value="#{detVentaController.selected.cantidad}" title="#{bundle.ViewDetVentaTitle_cantidad}"/>
+                        <h:outputText value="#{bundle.ViewDetVentaLabel_libro}"/>
+                        <h:outputText value="#{detVentaController.selected.libro}" title="#{bundle.ViewDetVentaTitle_libro}"/>
+                        <h:outputText value="#{bundle.ViewDetVentaLabel_venta}"/>
+                        <h:outputText value="#{detVentaController.selected.venta}" title="#{bundle.ViewDetVentaTitle_venta}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="DetVentaViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

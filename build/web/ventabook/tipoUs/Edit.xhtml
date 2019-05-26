@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TipoUsEditDlg" widgetVar="TipoUsEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditTipoUsTitle}">
+            <h:form id="TipoUsEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{tipoUsController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditTipoUsLabel_idTipo}" for="idTipo" />
+                        <p:inputText id="idTipo" value="#{tipoUsController.selected.idTipo}" title="#{bundle.EditTipoUsTitle_idTipo}" required="true" requiredMessage="#{bundle.EditTipoUsRequiredMessage_idTipo}"/>
+                        <p:outputLabel value="#{bundle.EditTipoUsLabel_nombreTipo}" for="nombreTipo" />
+                        <p:inputText id="nombreTipo" value="#{tipoUsController.selected.nombreTipo}" title="#{bundle.EditTipoUsTitle_nombreTipo}" required="true" requiredMessage="#{bundle.EditTipoUsRequiredMessage_nombreTipo}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{tipoUsController.update}" value="#{bundle.Save}" update="display,:TipoUsListForm:datalist,:growl" oncomplete="handleSubmit(args, 'TipoUsEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="TipoUsEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

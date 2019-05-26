@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title><ui:insert name="title">Default Title</ui:insert></title>
+        <h:outputStylesheet library="css" name="jsfcrud.css"/>
+        <h:outputScript library="js" name="jsfcrud.js"/>
+    </h:head>
+
+    <h:body>
+
+        <p:growl id="growl" life="3000" />
+
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="135" header="#{bundle.AppName}">
+                <h:form id="menuForm">
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <h:graphicImage value="../../resources/img/libro.png" 
+                                                width="75px" height="75px">                                
+                                </h:graphicImage>
+                            </p:column>
+                            <p:column>
+                                <h1><h:outputText value="VentaBook"/></h1>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>                    
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="60">
+                <ui:insert name="footer">
+                    <h:outputText 
+                        value="VentaBook: Creado porPedro Briceño, Elias García, Daniel García, Ignacio Salazar.">
+                    </h:outputText>
+                </ui:insert>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <ui:insert name="body"/>
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>
+
+</html>

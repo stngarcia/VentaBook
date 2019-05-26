@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="LibroViewDlg" widgetVar="LibroViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Información del libro.">
+            <h:form id="LibroViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{libroController.selected != null}">
+                        <h:outputText value="Id"/>
+                        <h:outputText value="#{libroController.selected.idLibro}" title="#{bundle.ViewLibroTitle_idLibro}"/>
+                        <h:outputText value="Título"/>
+                        <h:outputText value="#{libroController.selected.tituloLibro}" title="#{bundle.ViewLibroTitle_tituloLibro}"/>
+                        <h:outputText value="ISBN"/>
+                        <h:outputText value="#{libroController.selected.isbnLibro}" title="#{bundle.ViewLibroTitle_isbnLibro}"/>
+                        <h:outputText value="Sinopsis"/>
+                        <h:outputText value="#{libroController.selected.sinopsisLibro}" title="#{bundle.ViewLibroTitle_sinopsisLibro}"/>
+                        <h:outputText value="Cant.Ejemplares"/>
+                        <h:outputText value="#{libroController.selected.cantidadejemplaresLibro}" title="#{bundle.ViewLibroTitle_cantidadejemplaresLibro}"/>
+                        <h:outputText value="Precio"/>
+                        <h:outputText value="$#{libroController.selected.precioLibro}" title="#{bundle.ViewLibroTitle_precioLibro}"/>
+                        <h:outputText value="Autor"/>
+                        <h:outputText value="#{libroController.selected.idAutor.nombreAutor}" title="#{bundle.ViewLibroTitle_idAutor}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="Cerrar" onclick="LibroViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
