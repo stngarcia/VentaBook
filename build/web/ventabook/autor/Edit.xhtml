@@ -3,22 +3,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition>
 
-        <p:dialog id="AutorEditDlg" widgetVar="AutorEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditAutorTitle}">
+        <p:dialog id="AutorEditDlg" widgetVar="AutorEditDialog" modal="true" resizable="false" appendTo="@(body)" header="Modificar autor.">
             <h:form id="AutorEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{autorController.selected != null}">
-                        <p:outputLabel value="#{bundle.EditAutorLabel_idAutor}" for="idAutor" />
-                        <p:inputText id="idAutor" value="#{autorController.selected.idAutor}" title="#{bundle.EditAutorTitle_idAutor}" required="true" requiredMessage="#{bundle.EditAutorRequiredMessage_idAutor}"/>
-                        <p:outputLabel value="#{bundle.EditAutorLabel_nombreAutor}" for="nombreAutor" />
+                        <p:outputLabel value="Nombre autor" for="nombreAutor" />
                         <p:inputText id="nombreAutor" value="#{autorController.selected.nombreAutor}" title="#{bundle.EditAutorTitle_nombreAutor}" required="true" requiredMessage="#{bundle.EditAutorRequiredMessage_nombreAutor}"/>
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{autorController.update}" value="#{bundle.Save}" update="display,:AutorListForm:datalist,:growl" oncomplete="handleSubmit(args, 'AutorEditDialog');"/>
-                    <p:commandButton value="#{bundle.Cancel}" onclick="AutorEditDialog.hide()"/>
+                    <p:commandButton actionListener="#{autorController.update}" value="Grabar cambios" update="display,:AutorListForm:datalist,:growl" oncomplete="handleSubmit(args, 'AutorEditDialog');"/>
+                    <p:commandButton value="Cancelar" onclick="AutorEditDialog.hide()"/>
                 </h:panelGroup>
             </h:form>
         </p:dialog>

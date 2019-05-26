@@ -3,21 +3,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition>
 
-        <p:dialog id="AutorViewDlg" widgetVar="AutorViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewAutorTitle}">
+        <p:dialog id="AutorViewDlg" widgetVar="AutorViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Información de autor.">
             <h:form id="AutorViewForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{autorController.selected != null}">
-                        <h:outputText value="#{bundle.ViewAutorLabel_idAutor}"/>
+                        <h:outputText value="Id"/>
                         <h:outputText value="#{autorController.selected.idAutor}" title="#{bundle.ViewAutorTitle_idAutor}"/>
-                        <h:outputText value="#{bundle.ViewAutorLabel_nombreAutor}"/>
+                        <h:outputText value="Nombre autor"/>
                         <h:outputText value="#{autorController.selected.nombreAutor}" title="#{bundle.ViewAutorTitle_nombreAutor}"/>
                     </p:panelGrid>
-                    <p:commandButton value="#{bundle.Close}" onclick="AutorViewDialog.hide()"/>
+                    <p:commandButton value="Cerrar" onclick="AutorViewDialog.hide()"/>
                 </h:panelGroup>
             </h:form>
         </p:dialog>

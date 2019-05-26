@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package modelo;
-
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -23,10 +17,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-
-
 /**
- *
  * @author asathor
  */
 @Entity
@@ -42,7 +33,6 @@ public class Autor implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ID_AUTOR", nullable = false, precision = 0, scale = -127)
     private BigDecimal idAutor;
     @Basic(optional = false)
@@ -54,50 +44,42 @@ public class Autor implements Serializable {
     private List<Libro> libroList;
 
     public Autor() {
+        this.idAutor = null;
     }
-
 
     public Autor(BigDecimal idAutor) {
         this.idAutor = idAutor;
     }
-
 
     public Autor(BigDecimal idAutor, String nombreAutor) {
         this.idAutor = idAutor;
         this.nombreAutor = nombreAutor;
     }
 
-
     public BigDecimal getIdAutor() {
         return idAutor;
     }
-
 
     public void setIdAutor(BigDecimal idAutor) {
         this.idAutor = idAutor;
     }
 
-
     public String getNombreAutor() {
         return nombreAutor;
     }
 
-
     public void setNombreAutor(String nombreAutor) {
         this.nombreAutor = nombreAutor;
     }
-
 
     @XmlTransient
     public List<Libro> getLibroList() {
         return libroList;
     }
 
-
     public void setLibroList(List<Libro> libroList) {
         this.libroList = libroList;
     }
-
 
     @Override
     public int hashCode() {
@@ -105,7 +87,6 @@ public class Autor implements Serializable {
         hash += (idAutor != null ? idAutor.hashCode() : 0);
         return hash;
     }
-
 
     @Override
     public boolean equals(Object object) {
@@ -120,10 +101,9 @@ public class Autor implements Serializable {
         return true;
     }
 
-
     @Override
     public String toString() {
         return this.nombreAutor;
     }
-    
+
 }
