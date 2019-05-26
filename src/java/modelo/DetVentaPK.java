@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package modelo;
 
-
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -15,9 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
-
 /**
- *
  * @author asathor
  */
 @Embeddable
@@ -31,13 +23,13 @@ public class DetVentaPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID_LIBRO", nullable = false)
-    private BigInteger idLibro;
+    private BigDecimal idLibro;
 
     public DetVentaPK() {
     }
 
 
-    public DetVentaPK(String idVenta, BigInteger idLibro) {
+    public DetVentaPK(String idVenta, BigDecimal idLibro) {
         this.idVenta = idVenta;
         this.idLibro = idLibro;
     }
@@ -53,12 +45,12 @@ public class DetVentaPK implements Serializable {
     }
 
 
-    public BigInteger getIdLibro() {
+    public BigDecimal getIdLibro() {
         return idLibro;
     }
 
 
-    public void setIdLibro(BigInteger idLibro) {
+    public void setIdLibro(BigDecimal idLibro) {
         this.idLibro = idLibro;
     }
 
@@ -74,7 +66,6 @@ public class DetVentaPK implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof DetVentaPK)) {
             return false;
         }
@@ -93,5 +84,6 @@ public class DetVentaPK implements Serializable {
     public String toString() {
         return "modelo.DetVentaPK[ idVenta=" + idVenta + ", idLibro=" + idLibro + " ]";
     }
-    
+
+
 }

@@ -71,47 +71,78 @@
                                     </p:panel>
                                 </p:panelGrid>
                             </p:column>
-
-                            <!-- Aqui van los libros -->
+                            <!-- Aqui van los libros seleccionados -->
                             <p:column>
-                                <h:outputText value="Libros seleccionados"/>
-                                <p:selectManyMenu id="idLibros" value="#{ventaController.libro}" required="true" requiredMessage="Debe seleccionar un libro." style="width:100%;">
-                                    <f:selectItems value="#{libroController.itemsAvailableSelectMany}"
-                                                   var="idLibro"
-                                                   itemValue="#{libro}"/>
-                                </p:selectManyMenu>
-
-
+                                <h:form id="DetVentaListForm">
+                                    <p:panel header="Libros a vender">
+                                        <p:dataTable id="dtLibrosSeleccionados" value="#{ventaController.selected.detVentaList}" var="itemDetalle"
+                                                     selectionMode="single" selection="#{detVentaController.selected}"
+                                                     emptyMessage="Seleccione libros a vender..."
+                                                     >
+                                            <p:column headerText="Título" sortBy="#{itemDetalle.libro.tituloLibro}" filterBy="#{itemDetalle.libro.tituloLibro}" styleClass="header">
+                                                <h:outputText value="#{itemDetalle.libro.tituloLibro}"/>
+                                            </p:column>
+                                            <p:column headerText="Precio" sortBy="#{itemDetalle.libro.precioLibro}" filterBy="#{itemDetalle.libro.precioLibro}" styleClass="header">
+                                                <h:outputText value="$#{itemDetalle.libro.precioLibro}" />
+                                            </p:column>
+                                            <p:column headerText="Cantidad" sortBy="#{itemDetalle.cantidad}" filterBy="#{itemDetalle.cantidad}" styleClass="header">
+                                                <h:outputText value="#{itemDetalle.cantidad}"/>
+                                            </p:column>
+                                            <p:column headerText="Total" styleClass="header">
+                                                <h:outputText value="$#{itemDetalle.libro.precioLibro*itemDetalle.cantidad}" />
+                                            </p:column>
+                                            <p:summaryRow>
+                                                <p:column colspan="3" style="text-align:right">
+                                                    <h:outputText value="Total:" />
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputText value="#{ventaController.totalCompra}">
+                                                        <f:convertNumber type="currency" currencySymbol="$" />
+                                                    </h:outputText>
+                                                </p:column>
+                                            </p:summaryRow>
+                                        </p:dataTable>
+                                        <p:commandButton id="btnSeleccionarLibros" value="Agregar libros a la compra" type="button" onclick="PF('dlgAgregarLibros').show();"   />
+                                    </p:panel>
+                                </h:form>
                                 <!-- Aqui se seleccionan los libros -->
-                                <p:commandButton id="btnSeleccionarLibros" value="Agregar libros a la compra" type="button" onclick="PF('dlgAgregarLibros').show();"   />
-                                <p:dialog header="Dialog" widgetVar="dlgAgregarLibros" dynamic="true">
+                                <p:dialog header="Dialog" widgetVar="dlgAgregarLibros" dynamic="true" width="75%">
                                     <h:form id="tempForm2">
                                         <p:growl id="growl2" life="2000" />
                                         <p:panel header="Lista de libros">
-                                            <p:dataTable id="datalist" value="#{libroController.items}" var="item"
+                                            <p:dataTable id="dtSeleccionar" value="#{libroController.items}" var="itemLibro"
                                                          selectionMode="single" selection="#{libroController.selected}"
+                                                         emptyMessage="No hay libros disponibles..."
                                                          paginator="true"
-                                                         rowKey="#{item.idLibro}"
+                                                         rowKey="#{itemLibro.idLibro}"
                                                          rows="10"
                                                          rowsPerPageTemplate="10,20,30,40,50"
                                                          >
+                                                <p:ajax event="rowSelect" update="btnAgregarSeleccion btnCancelarSeleccion"/>
+                                                <p:ajax event="rowUnselect" update="btnAgregarSeleccion btnCancelarSeleccion" />
 
-                                                <p:column headerText="Título" sortBy="#{item.tituloLibro}" filterBy="#{item.tituloLibro}" styleClass="header">
-                                                    <h:outputText value="#{item.tituloLibro}"/>
+                                                <p:column headerText="Título" sortBy="#{itemLibro.tituloLibro}" filterBy="#{itemLibro.tituloLibro}" styleClass="header">
+                                                    <h:outputText value="#{itemLibro.tituloLibro}"/>
                                                 </p:column>
-                                                <p:column headerText="Cant.Ejemplares" sortBy="#{item.cantidadejemplaresLibro}" filterBy="#{item.cantidadejemplaresLibro}" styleClass="header">
-                                                    <h:outputText value="#{item.cantidadejemplaresLibro}"/>
+                                                <p:column headerText="Cant.Ejemplares" sortBy="#{itemLibro.cantidadejemplaresLibro}" filterBy="#{itemLibro.cantidadejemplaresLibro}" styleClass="header">
+                                                    <h:outputText value="#{itemLibro.cantidadejemplaresLibro}"/>
                                                 </p:column>
-                                                <p:column headerText="Precio" sortBy="#{item.precioLibro}" filterBy="#{item.precioLibro}" styleClass="header">
-                                                    <h:outputText value="$#{item.precioLibro}"/>
+                                                <p:column headerText="Precio" sortBy="#{itemLibro.precioLibro}" filterBy="#{itemLibro.precioLibro}" styleClass="header">
+                                                    <h:outputText value="$#{itemLibro.precioLibro}"/>
                                                 </p:column>
-                                                <p:column headerText="Autor" sortBy="#{item.idAutor.nombreAutor}" filterBy="#{item.idAutor.nombreAutor}" styleClass="header" >
-                                                    <h:outputText value="#{item.idAutor.nombreAutor}"/>
+                                                <p:column headerText="Autor" sortBy="#{itemLibro.idAutor.nombreAutor}" filterBy="#{itemLibro.idAutor.nombreAutor}" styleClass="header" >
+                                                    <h:outputText value="#{itemLibro.idAutor.nombreAutor}"/>
                                                 </p:column>
+                                                <f:facet name="footer">
+                                                    <p:commandButton id="btnAgregarSeleccion" value="Agregar libro"
+                                                                     actionListener="#{ventaController.agregarLibro(itemLibro)}"
+                                                                     onclick="PF('dlgAgregarLibros').hide();"
+                                                                     update=":VentaCreateForm:DetVentaListForm:dtLibrosSeleccionados" disabled="#{empty libroController.selected}" />
+                                                    <p:commandButton id="btnCancelarSeleccion" value="Cancelar" onclick="PF('dlgAgregarLibros').hide();" />
+                                                </f:facet>
                                             </p:dataTable>
-
                                         </p:panel>
-                                        <p:commandButton value="Cancelar" onclick="PF('dlgAgregarLibros').hide();" />
+
                                     </h:form>
                                 </p:dialog>
 

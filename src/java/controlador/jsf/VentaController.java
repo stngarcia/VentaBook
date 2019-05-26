@@ -3,6 +3,7 @@ package controlador.jsf;
 import controlador.jsf.util.JsfUtil;
 import controlador.jsf.util.JsfUtil.PersistAction;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -15,8 +16,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Named;
+import modelo.DetVenta;
 import modelo.Libro;
 import modelo.Venta;
+
 
 @Named("ventaController")
 @SessionScoped
@@ -26,35 +29,41 @@ public class VentaController implements Serializable {
     private controlador.jsf.VentaFacade ejbFacade;
     private List<Venta> items = null;
     private Venta selected;
-    private Libro libro;
     private boolean mostrar;
 
     public VentaController() {
     }
 
+
     public Venta getSelected() {
         return selected;
     }
+
 
     public void setSelected(Venta selected) {
         this.selected = selected;
     }
 
+
     protected void setEmbeddableKeys() {
     }
+
 
     protected void initializeEmbeddableKey() {
     }
 
+
     private VentaFacade getFacade() {
         return ejbFacade;
     }
+
 
     public Venta prepareCreate() {
         selected = new Venta();
         initializeEmbeddableKey();
         return selected;
     }
+
 
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("VentaCreated"));
@@ -63,9 +72,11 @@ public class VentaController implements Serializable {
         }
     }
 
+
     public void update() {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("VentaUpdated"));
     }
+
 
     public void destroy() {
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("VentaDeleted"));
@@ -75,12 +86,14 @@ public class VentaController implements Serializable {
         }
     }
 
+
     public List<Venta> getItems() {
         if (items == null) {
             items = getFacade().findAll();
         }
         return items;
     }
+
 
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
@@ -110,17 +123,21 @@ public class VentaController implements Serializable {
         }
     }
 
+
     public Venta getVenta(java.lang.String id) {
         return getFacade().find(id);
     }
+
 
     public List<Venta> getItemsAvailableSelectMany() {
         return getFacade().findAll();
     }
 
+
     public List<Venta> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
+
 
     @FacesConverter(forClass = Venta.class)
     public static class VentaControllerConverter implements Converter {
@@ -135,17 +152,20 @@ public class VentaController implements Serializable {
             return controller.getVenta(getKey(value));
         }
 
+
         java.lang.String getKey(String value) {
             java.lang.String key;
             key = value;
             return key;
         }
 
+
         String getStringKey(java.lang.String value) {
             StringBuilder sb = new StringBuilder();
             sb.append(value);
             return sb.toString();
         }
+
 
         @Override
         public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
@@ -161,23 +181,18 @@ public class VentaController implements Serializable {
             }
         }
 
+
     }
 
     public void mostrarDatosFactura() {
         this.mostrar = (this.selected.getIdTipoDoc().getIdTipoDoc().intValue() == 1 ? false : true);
     }
 
+
     public boolean getMostrar() {
         return this.mostrar;
     }
 
-    public Libro getLibro() {
-        return this.libro;
-    }
-
-    public void setLibro(Libro libro) {
-        this.libro = libro;
-    }
 
     public void limpiarDatosFacturacion() {
         this.selected.setRazonsocialFactura("");
@@ -187,5 +202,20 @@ public class VentaController implements Serializable {
         this.selected.setContactoFactura("");
         this.selected.setCiudadFactura("");
     }
+
+
+    public long totalCompra() {
+        long total = this.selected.getDetVentaList().stream().mapToLong(o -> o.getCantidad() * o.getLibro().getPrecioLibro()).sum();
+        return total;
+    }
+
+
+    public void agregarLibro(Libro libro) {
+        DetVenta miDetalle = new DetVenta(this.selected.getIdVenta(), libro.getIdLibro());
+        short cantidad = 1;
+        miDetalle.setCantidad(cantidad);
+        this.selected.getDetVentaList().add(miDetalle);
+    }
+
 
 }

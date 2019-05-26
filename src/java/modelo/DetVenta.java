@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package modelo;
 
-
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -21,9 +15,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
-
 /**
- *
  * @author asathor
  */
 @Entity
@@ -65,7 +57,7 @@ public class DetVenta implements Serializable {
     }
 
 
-    public DetVenta(String idVenta, BigInteger idLibro) {
+    public DetVenta(String idVenta, BigDecimal idLibro) {
         this.detVentaPK = new DetVentaPK(idVenta, idLibro);
     }
 
@@ -136,5 +128,6 @@ public class DetVenta implements Serializable {
     public String toString() {
         return "modelo.DetVenta[ detVentaPK=" + detVentaPK + " ]";
     }
-    
+
+
 }
