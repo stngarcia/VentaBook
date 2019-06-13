@@ -7,162 +7,78 @@
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition>
-
-        <p:dialog id="VentaCreateDlg" widgetVar="VentaCreateDialog" modal="true" resizable="true" appendTo="@(body)" header="Crear nueva venta.">
+        <p:dialog id="VentaCreateDlg" widgetVar="VentaCreateDialog" modal="true" resizable="true" appendTo="@(body)" header="Crear nueva venta." style="margin:auto;">
             <h:form id="VentaCreateForm">
-                <h:panelGroup id="display">
-                    <p:panelGrid>
-                        <p:row>
-                            <!-- Aqui van los datos de la venta -->
-                            <p:column>
-                                <p:panelGrid columns="2" rendered="#{ventaController.selected != null}">
-                                    <p:outputLabel value="Folio venta" for="idVenta" disabled="true" />
-                                    <p:inputText id="idVenta" value="#{ventaController.selected.idVenta}" title="#{bundle.CreateVentaTitle_idVenta}" required="true" requiredMessage="#{bundle.CreateVentaRequiredMessage_idVenta}"/>
-                                    <p:outputLabel value="Fecha venta" for="fechaVenta" />
-                                    <p:calendar id="fechaVenta" pattern="dd/MM/yyyy" value="#{ventaController.selected.fechaVenta}" title="Fecha de venta" required="true" requiredMessage="#{bundle.EditVentaRequiredMessage_fechaVenta}" showOn="button"/>
-                                    <p:outputLabel value="Rut cliente" for="rutcliente" />
-                                    <p:inputText id="rutcliente" value="#{ventaController.selected.rutcliente}" title="#{bundle.CreateVentaTitle_rutcliente}" required="true" requiredMessage="#{bundle.CreateVentaRequiredMessage_rutcliente}"/>
-                                    <p:outputLabel value="Nombre cliente" for="nombrecliente" />
-                                    <p:inputText id="nombrecliente" value="#{ventaController.selected.nombrecliente}" title="#{bundle.CreateVentaTitle_nombrecliente}" required="true" requiredMessage="#{bundle.CreateVentaRequiredMessage_nombrecliente}"/>
-                                    <p:outputLabel value="Vendedor" for="idUsuario" />
-                                    <p:selectOneMenu id="idUsuario" value="#{ventaController.selected.idUsuario}" required="true" requiredMessage="#{bundle.EditVentaRequiredMessage_idUsuario}">
-                                        <f:selectItem itemLabel="Seleccione un vendedor" itemValue="" />
-                                        <f:selectItems value="#{usuarioController.itemsAvailableSelectOne}"
-                                                       var="idUsuarioItem"
-                                                       itemValue="#{idUsuarioItem}"/>
-                                    </p:selectOneMenu>
-                                    <p:outputLabel value="Tipo documento" for="idTipoDoc" />
-                                    <p:selectOneMenu id="idTipoDoc" value="#{ventaController.selected.idTipoDoc}" required="true" requiredMessage="#{bundle.EditVentaRequiredMessage_idTipoDoc}">
-                                        <f:selectItem itemLabel="Seleccione un tipo de documento" itemValue="" />
-                                        <f:selectItems value="#{tipoDocController.itemsAvailableSelectOne}"
-                                                       var="idTipoDocItem"
-                                                       itemValue="#{idTipoDocItem}"/>
-                                        <p:ajax listener="#{ventaController.mostrarDatosFactura()}" update="panel" />
-                                    </p:selectOneMenu>
-                                    <p:panel id="panel" >
-                                        <p:panelGrid id="datosFacturacion" rendered="#{ventaController.mostrar}" style="width:100%">
-                                            <p:commandButton id="btnDatosFactura" value="Agregar datos de facturación" type="button" onclick="PF('dlgDatosFacturacion').show();"   />
-                                            <!-- Datos de facturacion -->
-                                            <p:dialog header="Dialog" widgetVar="dlgDatosFacturacion" dynamic="true">
-                                                <h:form id="tempForm">
-                                                    <p:growl id="growl" life="2000" />
-                                                    <p:panelGrid columns="2" >
-                                                        <f:facet name="header">
-                                                            <h:outputText value="Datos de facturacion" />
-                                                        </f:facet>
-                                                        <p:outputLabel value="Razón social" for="razonsocialFactura" />
-                                                        <p:inputText id="razonsocialFactura" value="#{ventaController.selected.razonsocialFactura}" title="#{bundle.CreateVentaTitle_razonsocialFactura}" />
-                                                        <p:outputLabel value="Rut empresa" for="rutFactura" />
-                                                        <p:inputText id="rutFactura" value="#{ventaController.selected.rutFactura}" title="#{bundle.CreateVentaTitle_rutFactura}" />
-                                                        <p:outputLabel value="Dirección empresa" for="direccionFactura" />
-                                                        <p:inputText id="direccionFactura" value="#{ventaController.selected.direccionFactura}" title="#{bundle.CreateVentaTitle_direccionFactura}" />
-                                                        <p:outputLabel value="Giro empresa" for="giroFactura" />
-                                                        <p:inputText id="giroFactura" value="#{ventaController.selected.giroFactura}" title="#{bundle.CreateVentaTitle_giroFactura}" />
-                                                        <p:outputLabel value="Contacto" for="contactoFactura" />
-                                                        <p:inputText id="contactoFactura" value="#{ventaController.selected.contactoFactura}" title="#{bundle.CreateVentaTitle_contactoFactura}" />
-                                                        <p:outputLabel value="Ciudad" for="ciudadFactura" />
-                                                        <p:inputText id="ciudadFactura" value="#{ventaController.selected.ciudadFactura}" title="#{bundle.CreateVentaTitle_ciudadFactura}" />
-                                                    </p:panelGrid>
-                                                    <p:commandButton value="Aceptar" onclick="PF('dlgDatosFacturacion').hide();" />
-                                                    <p:commandButton value="Cancelar" actionListener="#{ventaController.limpiarDatosFacturacion()}"  onclick="PF('dlgDatosFacturacion').hide();" />
-                                                </h:form>
-                                            </p:dialog>
-                                        </p:panelGrid>
-                                    </p:panel>
-                                </p:panelGrid>
-                            </p:column>
-                            <!-- Aqui van los libros seleccionados -->
-                            <p:column>
-                                <h:form id="DetVentaListForm">
-                                    <p:panel header="Libros a vender">
-                                        <p:dataTable id="dtLibrosSeleccionados" value="#{ventaController.selected.detVentaList}" var="itemDetalle"
-                                                     selectionMode="single" selection="#{detVentaController.selected}"
-                                                     emptyMessage="Seleccione libros a vender..."
-                                                     >
-                                            <p:column headerText="Título" sortBy="#{itemDetalle.libro.tituloLibro}" filterBy="#{itemDetalle.libro.tituloLibro}" styleClass="header">
-                                                <h:outputText value="#{itemDetalle.libro.tituloLibro}"/>
-                                            </p:column>
-                                            <p:column headerText="Precio" sortBy="#{itemDetalle.libro.precioLibro}" filterBy="#{itemDetalle.libro.precioLibro}" styleClass="header">
-                                                <h:outputText value="$#{itemDetalle.libro.precioLibro}" />
-                                            </p:column>
-                                            <p:column headerText="Cantidad" sortBy="#{itemDetalle.cantidad}" filterBy="#{itemDetalle.cantidad}" styleClass="header">
-                                                <h:outputText value="#{itemDetalle.cantidad}"/>
-                                            </p:column>
-                                            <p:column headerText="Total" styleClass="header">
-                                                <h:outputText value="$#{itemDetalle.libro.precioLibro*itemDetalle.cantidad}" />
-                                            </p:column>
-                                            <p:summaryRow>
-                                                <p:column colspan="3" style="text-align:right">
-                                                    <h:outputText value="Total:" />
-                                                </p:column>
-                                                <p:column>
-                                                    <h:outputText value="#{ventaController.totalCompra}">
-                                                        <f:convertNumber type="currency" currencySymbol="$" />
-                                                    </h:outputText>
-                                                </p:column>
-                                            </p:summaryRow>
-                                        </p:dataTable>
-                                        <p:commandButton id="btnSeleccionarLibros" value="Agregar libros a la compra" type="button" onclick="PF('dlgAgregarLibros').show();"   />
-                                    </p:panel>
-                                </h:form>
-                                <!-- Aqui se seleccionan los libros -->
-                                <p:dialog header="Dialog" widgetVar="dlgAgregarLibros" dynamic="true" width="75%">
-                                    <h:form id="tempForm2">
-                                        <p:growl id="growl2" life="2000" />
-                                        <p:panel header="Lista de libros">
-                                            <p:dataTable id="dtSeleccionar" value="#{libroController.items}" var="itemLibro"
-                                                         selectionMode="single" selection="#{libroController.selected}"
-                                                         emptyMessage="No hay libros disponibles..."
-                                                         paginator="true"
-                                                         rowKey="#{itemLibro.idLibro}"
-                                                         rows="10"
-                                                         rowsPerPageTemplate="10,20,30,40,50"
-                                                         >
-                                                <p:ajax event="rowSelect" update="btnAgregarSeleccion btnCancelarSeleccion"/>
-                                                <p:ajax event="rowUnselect" update="btnAgregarSeleccion btnCancelarSeleccion" />
+                <p:growl id="growl" sticky="true" showDetail="true"/>
+                <p:tabView>
+                    <p:tab title="Datos de venta">
+                        <p:panel header="Datos de la venta">
+                            <p:messages />
+                            <h:panelGrid columns="2" columnClasses="label, value">
+                                <p:outputLabel value="Folio venta" for="idVenta" disabled="true" />
+                                <p:inputText id="idVenta" value="#{ventaController.selected.idVenta}" title="#{bundle.CreateVentaTitle_idVenta}" required="true" requiredMessage="#{bundle.CreateVentaRequiredMessage_idVenta}"/>
+                                <p:outputLabel value="Fecha venta" for="fechaVenta" />
+                                <p:calendar id="fechaVenta" locale="es" pattern="dd/MM/yyyy" value="#{ventaController.selected.fechaVenta}" title="Fecha de venta" required="true" requiredMessage="Debe ingresar una fecha de venta." showOn="button"/>
+                                <p:outputLabel value="Rut cliente" for="rutcliente" />
+                                <p:inputText id="rutcliente" value="#{ventaController.selected.rutcliente}" title="Rut cliente" required="true" requiredMessage="El rut del cliente es obligatorio."/>
+                                <p:outputLabel value="Nombre cliente" for="nombrecliente" />
+                                <p:inputText id="nombrecliente" value="#{ventaController.selected.nombrecliente}" title="Nombre cliente" required="true" requiredMessage="El nombre del cliente es obligatorio."/>
+                                <p:outputLabel value="Vendedor" for="idUsuario" />
+                                <p:selectOneMenu id="idUsuario" value="#{ventaController.selected.idUsuario}" required="true" requiredMessage="Debe seleccionar un vendedor.">
+                                    <f:selectItem itemLabel="Seleccione un vendedor" itemValue="" />
+                                    <f:selectItems value="#{usuarioController.itemsAvailableSelectOne}"
+                                                   var="idUsuarioItem"
+                                                   itemValue="#{idUsuarioItem}"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Tipo documento" for="idTipoDoc" />
+                                <p:selectOneMenu id="idTipoDoc" value="#{ventaController.selected.idTipoDoc}" required="true" requiredMessage="Debe seleccionar un tipo de documento.">
+                                    <f:selectItems value="#{tipoDocController.itemsAvailableSelectOne}"
+                                                   var="idTipoDocItem"
+                                                   itemValue="#{idTipoDocItem}"/>
+                                    <p:ajax listener="#{ventaController.mostrarDatosFactura()}" update="panel VentaCreateForm" />
+                                </p:selectOneMenu>
 
-                                                <p:column headerText="Título" sortBy="#{itemLibro.tituloLibro}" filterBy="#{itemLibro.tituloLibro}" styleClass="header">
-                                                    <h:outputText value="#{itemLibro.tituloLibro}"/>
-                                                </p:column>
-                                                <p:column headerText="Cant.Ejemplares" sortBy="#{itemLibro.cantidadejemplaresLibro}" filterBy="#{itemLibro.cantidadejemplaresLibro}" styleClass="header">
-                                                    <h:outputText value="#{itemLibro.cantidadejemplaresLibro}"/>
-                                                </p:column>
-                                                <p:column headerText="Precio" sortBy="#{itemLibro.precioLibro}" filterBy="#{itemLibro.precioLibro}" styleClass="header">
-                                                    <h:outputText value="$#{itemLibro.precioLibro}"/>
-                                                </p:column>
-                                                <p:column headerText="Autor" sortBy="#{itemLibro.idAutor.nombreAutor}" filterBy="#{itemLibro.idAutor.nombreAutor}" styleClass="header" >
-                                                    <h:outputText value="#{itemLibro.idAutor.nombreAutor}"/>
-                                                </p:column>
-                                                <f:facet name="footer">
-                                                    <p:commandButton id="btnAgregarSeleccion" value="Agregar libro"
-                                                                     actionListener="#{ventaController.agregarLibro(itemLibro)}"
-                                                                     onclick="PF('dlgAgregarLibros').hide();"
-                                                                     update=":VentaCreateForm:DetVentaListForm:dtLibrosSeleccionados" disabled="#{empty libroController.selected}" />
-                                                    <p:commandButton id="btnCancelarSeleccion" value="Cancelar" onclick="PF('dlgAgregarLibros').hide();" />
-                                                </f:facet>
-                                            </p:dataTable>
-                                        </p:panel>
+                                <!-- Datos de facturacion -->
+                                <p:panel id="panel" >
+                                    <p:panelGrid id="datosFacturacion" rendered="#{ventaController.mostrar}" style="width:100%">
+                                        <p:commandButton id="btnDatosFactura" value="Agregar datos de facturación" type="button" onclick="PF('dlgDatosFacturacion').show();"/>
+                                        <p:dialog header="Ingreso de datos de facturación" widgetVar="dlgDatosFacturacion" dynamic="true">
+                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                <p:outputLabel value="Razón social" for="razonsocialFactura" />
+                                                <p:inputText id="razonsocialFactura" value="#{ventaController.selected.razonsocialFactura}" title="Razón social" />
+                                                <p:outputLabel value="Rut empresa" for="rutFactura" />
+                                                <p:inputText id="rutFactura" value="#{ventaController.selected.rutFactura}" title="Rut empresa" />
+                                                <p:outputLabel value="Dirección" for="direccionFactura" />
+                                                <p:inputText id="direccionFactura" value="#{ventaController.selected.direccionFactura}" title="Dirección" />
+                                                <p:outputLabel value="Giro" for="giroFactura" />
+                                                <p:inputText id="giroFactura" value="#{ventaController.selected.giroFactura}" title="Giro" />
+                                                <p:outputLabel value="Contacto" for="contactoFactura" />
+                                                <p:inputText id="contactoFactura" value="#{ventaController.selected.contactoFactura}" title="Contacto" />
+                                                <p:outputLabel value="Ciudad" for="ciudadFactura" />
+                                                <p:inputText id="ciudadFactura" value="#{ventaController.selected.ciudadFactura}" title="Ciudad" />
+                                            </h:panelGrid>
+                                            <p:commandButton value="Aceptar" onclick="PF('dlgDatosFacturacion').hide();" />
+                                            <p:commandButton value="Cancelar" action="#{ventaController.limpiarDatosFacturacion(ventaController.selected)}"  onclick="PF('dlgDatosFacturacion').hide();" update="VentaCreateForm" />
+                                        </p:dialog>
+                                    </p:panelGrid>
+                                </p:panel>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:tab>
 
-                                    </h:form>
-                                </p:dialog>
+                    <!-- Aqui van los libros -->
+                    <p:tab title="Selección de libros">
+                        <ui:include src="librosSeleccionados.xhtml"/>
+                        <ui:include src="agregarLibros.xhtml"/>
+                    </p:tab>
 
-                            </p:column>
-                        </p:row>
-
-                        <!-- Aqui van los botones -->
-                        <p:row>
-                            <p:column>
-                                <p:commandButton actionListener="#{ventaController.create}" value="Grabar venta" update="display,:VentaListForm:datalist,:growl" oncomplete="handleSubmit(args,'VentaCreateDialog');"/>
-                                <p:commandButton value="Cancelar" onclick="VentaCreateDialog.hide()"/>
-                            </p:column>
-                        </p:row>
-
-
-
-                    </p:panelGrid>
-                </h:panelGroup>
+                </p:tabView>
             </h:form>
         </p:dialog>
 
+
+
+
+        <h:outputScript library="js" name="spanishLocale.js" />
     </ui:composition>
 </html>

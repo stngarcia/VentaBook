@@ -1,6 +1,6 @@
 package controlador.jsf;
 
-
+import ejb.LibroFacade;
 import controlador.jsf.util.JsfUtil;
 import controlador.jsf.util.JsfUtil.PersistAction;
 import java.io.Serializable;
@@ -24,7 +24,7 @@ import modelo.Libro;
 public class LibroController implements Serializable {
 
     @EJB
-    private controlador.jsf.LibroFacade ejbFacade;
+    private ejb.LibroFacade ejbFacade;
     private List<Libro> items = null;
     private Libro selected;
 

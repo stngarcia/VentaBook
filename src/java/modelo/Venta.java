@@ -94,6 +94,7 @@ public class Venta implements Serializable {
 
     public Venta() {
         this.idVenta = UUID.randomUUID().toString();
+        this.fechaVenta = new Date();
         this.detVentaList = new ArrayList<>();
     }
 
@@ -261,6 +262,31 @@ public class Venta implements Serializable {
             return false;
         }
         return true;
+    }
+
+
+    public void agregarDetalle(DetVenta miDetalle) {
+        this.detVentaList.add(miDetalle);
+    }
+
+
+    public void removerDetalle(DetVenta miDetalle) {
+        this.detVentaList.remove(miDetalle);
+    }
+
+
+    public void limpiarDetalles() {
+        this.detVentaList.clear();
+    }
+
+
+    public void limpiarDatosFacturacion() {
+        this.razonsocialFactura = "";
+        this.rutFactura = "";
+        this.direccionFactura = "";
+        this.giroFactura = "";
+        this.contactoFactura = "";
+        this.ciudadFactura = "";
     }
 
 

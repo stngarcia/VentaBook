@@ -1,8 +1,10 @@
 package controlador.jsf;
 
+import ejb.DetVentaFacade;
 import controlador.jsf.util.JsfUtil;
 import controlador.jsf.util.JsfUtil.PersistAction;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -17,44 +19,52 @@ import javax.faces.convert.FacesConverter;
 import javax.inject.Named;
 import modelo.DetVenta;
 
+
 @Named("detVentaController")
 @SessionScoped
 public class DetVentaController implements Serializable {
 
     @EJB
-    private controlador.jsf.DetVentaFacade ejbFacade;
+    private ejb.DetVentaFacade ejbFacade;
     private List<DetVenta> items = null;
     private DetVenta selected;
 
     public DetVentaController() {
     }
 
+
     public DetVenta getSelected() {
         return selected;
     }
+
 
     public void setSelected(DetVenta selected) {
         this.selected = selected;
     }
 
+
     protected void setEmbeddableKeys() {
-        selected.getDetVentaPK().setIdLibro(selected.getLibro().getIdLibro().toBigInteger());
+        selected.getDetVentaPK().setIdLibro(selected.getLibro().getIdLibro());
         selected.getDetVentaPK().setIdVenta(selected.getVenta().getIdVenta());
     }
+
 
     protected void initializeEmbeddableKey() {
         selected.setDetVentaPK(new modelo.DetVentaPK());
     }
 
+
     private DetVentaFacade getFacade() {
         return ejbFacade;
     }
+
 
     public DetVenta prepareCreate() {
         selected = new DetVenta();
         initializeEmbeddableKey();
         return selected;
     }
+
 
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("DetVentaCreated"));
@@ -63,9 +73,11 @@ public class DetVentaController implements Serializable {
         }
     }
 
+
     public void update() {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("DetVentaUpdated"));
     }
+
 
     public void destroy() {
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("DetVentaDeleted"));
@@ -75,12 +87,14 @@ public class DetVentaController implements Serializable {
         }
     }
 
+
     public List<DetVenta> getItems() {
         if (items == null) {
             items = getFacade().findAll();
         }
         return items;
     }
+
 
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
@@ -110,17 +124,21 @@ public class DetVentaController implements Serializable {
         }
     }
 
+
     public DetVenta getDetVenta(modelo.DetVentaPK id) {
         return getFacade().find(id);
     }
+
 
     public List<DetVenta> getItemsAvailableSelectMany() {
         return getFacade().findAll();
     }
 
+
     public List<DetVenta> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
+
 
     @FacesConverter(forClass = DetVenta.class)
     public static class DetVentaControllerConverter implements Converter {
@@ -138,14 +156,17 @@ public class DetVentaController implements Serializable {
             return controller.getDetVenta(getKey(value));
         }
 
+
         modelo.DetVentaPK getKey(String value) {
             modelo.DetVentaPK key;
             String values[] = value.split(SEPARATOR_ESCAPED);
             key = new modelo.DetVentaPK();
             key.setIdVenta(values[0]);
-            key.setIdLibro(values[1]);
+            BigDecimal miValor = new BigDecimal(values[1]);
+            key.setIdLibro(miValor);
             return key;
         }
+
 
         String getStringKey(modelo.DetVentaPK value) {
             StringBuilder sb = new StringBuilder();
@@ -154,6 +175,7 @@ public class DetVentaController implements Serializable {
             sb.append(value.getIdLibro());
             return sb.toString();
         }
+
 
         @Override
         public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
@@ -168,6 +190,7 @@ public class DetVentaController implements Serializable {
                 return null;
             }
         }
+
 
     }
 

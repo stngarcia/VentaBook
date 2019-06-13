@@ -1,6 +1,7 @@
 package controlador.jsf;
 
 
+import ejb.EstadoFacade;
 import controlador.jsf.util.JsfUtil;
 import controlador.jsf.util.JsfUtil.PersistAction;
 import java.io.Serializable;
@@ -24,7 +25,7 @@ import modelo.Estado;
 public class EstadoController implements Serializable {
 
     @EJB
-    private controlador.jsf.EstadoFacade ejbFacade;
+    private ejb.EstadoFacade ejbFacade;
     private List<Estado> items = null;
     private Estado selected;
 

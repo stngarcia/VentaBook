@@ -1,13 +1,14 @@
 package controlador.jsf;
 
+import ejb.VentaFacade;
 import controlador.jsf.util.JsfUtil;
 import controlador.jsf.util.JsfUtil.PersistAction;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
@@ -19,6 +20,7 @@ import javax.inject.Named;
 import modelo.DetVenta;
 import modelo.Libro;
 import modelo.Venta;
+import org.primefaces.event.RowEditEvent;
 
 
 @Named("ventaController")
@@ -26,12 +28,19 @@ import modelo.Venta;
 public class VentaController implements Serializable {
 
     @EJB
-    private controlador.jsf.VentaFacade ejbFacade;
+    private ejb.VentaFacade ejbFacade;
     private List<Venta> items = null;
     private Venta selected;
     private boolean mostrar;
+    private boolean skip;
 
     public VentaController() {
+    }
+
+
+    @PostConstruct
+    public void init() {
+        this.selected = new Venta();
     }
 
 
@@ -139,6 +148,41 @@ public class VentaController implements Serializable {
     }
 
 
+    public void mostrarDatosFactura() {
+        if (this.selected.getIdTipoDoc().getIdTipoDoc().intValue() == 2) {
+            this.mostrar = true;
+        } else {
+            this.mostrar = false;
+        }
+    }
+
+
+    public boolean getMostrar() {
+        return this.mostrar;
+    }
+
+
+    public boolean isSkip() {
+        return skip;
+    }
+
+
+    public void setSkip(boolean skip) {
+        this.skip = skip;
+    }
+
+
+    public void limpiarDatosFacturacion(Venta miVenta) {
+        miVenta.limpiarDatosFacturacion();
+    }
+
+
+    public long totalCompra() {
+        long total = this.selected.getDetVentaList().stream().mapToLong(o -> o.getCantidad() * o.getLibro().getPrecioLibro()).sum();
+        return total;
+    }
+
+
     @FacesConverter(forClass = Venta.class)
     public static class VentaControllerConverter implements Converter {
 
@@ -184,36 +228,21 @@ public class VentaController implements Serializable {
 
     }
 
-    public void mostrarDatosFactura() {
-        this.mostrar = (this.selected.getIdTipoDoc().getIdTipoDoc().intValue() == 1 ? false : true);
+    public void onRowEdit(RowEditEvent event) {
     }
 
 
-    public boolean getMostrar() {
-        return this.mostrar;
+    public void onRowCancel(RowEditEvent event) {
     }
 
 
-    public void limpiarDatosFacturacion() {
-        this.selected.setRazonsocialFactura("");
-        this.selected.setRutFactura("");
-        this.selected.setDireccionFactura("");
-        this.selected.setGiroFactura("");
-        this.selected.setContactoFactura("");
-        this.selected.setCiudadFactura("");
-    }
-
-
-    public long totalCompra() {
-        long total = this.selected.getDetVentaList().stream().mapToLong(o -> o.getCantidad() * o.getLibro().getPrecioLibro()).sum();
-        return total;
+    public void onAddNew() {
+        this.selected.getDetVentaList().add(new DetVenta());
     }
 
 
     public void agregarLibro(Libro libro) {
-        DetVenta miDetalle = new DetVenta(this.selected.getIdVenta(), libro.getIdLibro());
-        short cantidad = 1;
-        miDetalle.setCantidad(cantidad);
+        DetVenta miDetalle = new DetVenta();
         this.selected.getDetVentaList().add(miDetalle);
     }
 

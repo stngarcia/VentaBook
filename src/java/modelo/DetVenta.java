@@ -1,5 +1,6 @@
 package modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
@@ -38,6 +39,7 @@ public class DetVenta implements Serializable {
     @JoinColumn(name = "ID_LIBRO", referencedColumnName = "ID_LIBRO", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Libro libro;
+
     @JoinColumn(name = "ID_VENTA", referencedColumnName = "ID_VENTA", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Venta venta;

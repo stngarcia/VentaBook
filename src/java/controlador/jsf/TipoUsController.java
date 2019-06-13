@@ -1,6 +1,7 @@
 package controlador.jsf;
 
 
+import ejb.TipoUsFacade;
 import controlador.jsf.util.JsfUtil;
 import controlador.jsf.util.JsfUtil.PersistAction;
 import java.io.Serializable;
@@ -24,7 +25,7 @@ import modelo.TipoUs;
 public class TipoUsController implements Serializable {
 
     @EJB
-    private controlador.jsf.TipoUsFacade ejbFacade;
+    private ejb.TipoUsFacade ejbFacade;
     private List<TipoUs> items = null;
     private TipoUs selected;
 

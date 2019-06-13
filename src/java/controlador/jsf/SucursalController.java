@@ -1,6 +1,7 @@
 package controlador.jsf;
 
 
+import ejb.SucursalFacade;
 import controlador.jsf.util.JsfUtil;
 import controlador.jsf.util.JsfUtil.PersistAction;
 import java.io.Serializable;
@@ -24,7 +25,7 @@ import modelo.Sucursal;
 public class SucursalController implements Serializable {
 
     @EJB
-    private controlador.jsf.SucursalFacade ejbFacade;
+    private ejb.SucursalFacade ejbFacade;
     private List<Sucursal> items = null;
     private Sucursal selected;
 

@@ -15,7 +15,6 @@
 
         <ui:define name="body">
 
-            <p:growl id="mensajes" showDetail="true" life="4000" />
             <p:panelGrid style="margin: auto;  width:30%;">
                 <f:facet name="header">
                     <p:row>
@@ -23,10 +22,10 @@
                             <h1><h:outputText value="Acceso denegado"/></h1>
                         </p:column>
                     </p:row>
-                </f:facet>                
+                </f:facet>
                 <p:row>
                     <p:column style="float:right;">
-                        <h:graphicImage value="/resources/img/warning.png" 
+                        <h:graphicImage value="/resources/img/warning.png"
                                         style="margin-left: 10px; " width="75px" height="75px">
                         </h:graphicImage>
                     </p:column>
@@ -36,7 +35,7 @@
                 </p:row>
                 <p:row>
                     <p:column colspan="2">
-                        <p:button outcome="/index.xhtml" value="Iniciar sesión" 
+                        <p:button outcome="/index.xhtml" value="Iniciar sesión"
                                   style="width:100%; margin:auto; text-align: center;">
                         </p:button>
                     </p:column>

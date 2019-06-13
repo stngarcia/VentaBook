@@ -1,6 +1,7 @@
 package controlador.jsf;
 
 
+import ejb.UsuarioFacade;
 import controlador.jsf.util.JsfUtil;
 import controlador.jsf.util.JsfUtil.PersistAction;
 import java.io.Serializable;
@@ -24,7 +25,7 @@ import modelo.Usuario;
 public class UsuarioController implements Serializable {
 
     @EJB
-    private controlador.jsf.UsuarioFacade ejbFacade;
+    private ejb.UsuarioFacade ejbFacade;
     private List<Usuario> items = null;
     private Usuario selected;
 

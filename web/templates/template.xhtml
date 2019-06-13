@@ -14,7 +14,7 @@
     </h:head>
 
     <h:body>
-
+        <ui:debug hotkey="T"/>
         <p:growl id="growl" life="3000" />
 
         <p:layout fullPage="true">
@@ -23,33 +23,33 @@
                     <p:panelGrid>
                         <p:row>
                             <p:column>
-                                <h:graphicImage value="../../resources/img/libro.png" 
-                                                width="75px" height="75px">                                
+                                <h:graphicImage value="../../resources/img/libro.png"
+                                                width="75px" height="75px">
                                 </h:graphicImage>
                             </p:column>
                             <p:column>
                                 <h1><h:outputText value="VentaBook"/></h1>
                             </p:column>
                             <p:column>
-                                <h:commandButton action="/ventabook/inicio/inicio.xhtml" 
+                                <h:commandButton action="/ventabook/inicio/inicio.xhtml"
                                                  value="Inicio"
                                                  style="margin-right:20px;"
                                                  styleClass="ui-priority-primary"/>
                             </p:column>
                             <p:column>
-                                <h:commandButton action="#{loginController.logout()}" 
+                                <h:commandButton action="#{loginController.logout()}"
                                                  value="Cerrar sesión"
                                                  style="margin-right:20px;"
-                                                 styleClass="ui-priority-primary"/> 
+                                                 styleClass="ui-priority-primary"/>
                             </p:column>
                         </p:row>
-                    </p:panelGrid>                    
+                    </p:panelGrid>
                 </h:form>
             </p:layoutUnit>
 
             <p:layoutUnit position="south" size="60">
                 <ui:insert name="footer">
-                    <h:outputText 
+                    <h:outputText
                         value="VentaBook: Creado porPedro Briceño, Elias García, Daniel García, Ignacio Salazar.">
                     </h:outputText>
                 </ui:insert>

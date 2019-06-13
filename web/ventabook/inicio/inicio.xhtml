@@ -32,7 +32,7 @@
                                 <li>Quita un autor.</li>
                                 <li>Lista autores disponibles.</li>
                             </ul>
-                            <p:button outcome="/ventabook/autor/List.xhtml" value="Ir" 
+                            <p:button outcome="/ventabook/autor/List.xhtml" value="Ir"
                                       style="width:50%; margin:auto; text-align: center;">
                             </p:button>
                         </p:column>
@@ -45,7 +45,7 @@
                                 <li>Quita un libro.</li>
                                 <li>Lista libros disponibles.</li>
                             </ul>
-                            <p:button outcome="/ventabook/libro/List.xhtml" value="Ir" 
+                            <p:button outcome="/ventabook/libro/List.xhtml" value="Ir"
                                       style="width:50%; margin:auto; text-align: center;">
                             </p:button>
                         </p:column>
@@ -58,19 +58,20 @@
                                 <li>Quita un usuario.</li>
                                 <li>Lista usuarios disponibles.</li>
                             </ul>
-                            <p:button outcome="/ventabook/usuario/List.xhtml" value="Ir" 
+                            <p:button outcome="/ventabook/usuario/List.xhtml" value="Ir"
                                       style="width:50%; margin:auto; text-align: center;">
                             </p:button>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
 
-                <!-- Seguna grilla -->
+                <!-- Segunda grilla -->
                 <p:panelGrid style="margin-top:20px; margin-bottom: 20px; width:100%  ">
                     <f:facet name="header">
                         <p:row>
-                            <p:column>Datos facturación</p:column>
                             <p:column>Ventas</p:column>
+                            <p:column></p:column>
+                            <p:column></p:column>
                         </p:row>
                     </f:facet>
                     <p:row>
@@ -79,11 +80,13 @@
                                 <li>Registro de ventas.</li>
                                 <li>Lista de ventas realizadas</li>
                             </ul>
-                            <p:button outcome="/ventabook/venta/List.xhtml" value="Ir" 
+                            <p:button outcome="/ventabook/venta/nuevaVenta.xhtml"
+                                      value="Registrar nueva venta"
                                       style="width:50%; margin:auto; text-align: center;">
                             </p:button>
                         </p:column>
-
+                        <p:column></p:column>
+                        <p:column></p:column>
                     </p:row>
                 </p:panelGrid>
             </h:form>

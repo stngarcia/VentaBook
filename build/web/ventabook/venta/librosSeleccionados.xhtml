@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="librosForm">
+        <p:growl id="msgs" showDetail="true"/>
+        <p:dataTable id="dtLibros"
+                     widgetVar="dtLibros"
+                     value="#{ventaBean.venta.detVentaList}"
+                     var="itemDetalle"
+                     selectionMode="single"
+                     selection="#{ventaBean.detalle}"
+                     rowKey="#{itemDetalle.detVentaPK}"
+                     emptyMessage="No hay libros seleccionados}"
+                     sortBy="#{itemDetalle.libro.tituloLibro}"
+                     >
+            <p:ajax event="rowSelect"   update="@(btnAgregar) @(btnQuitar) @(btnLimpiar)"/>
+            <p:ajax event="rowUnselect" update="@(btnAgregar) @(btnQuitar) @(btnLimpiar)"/>
+
+            <p:column headerText="Título">
+                <h:outputText value="#{itemDetalle.libro.tituloLibro}" />
+            </p:column>
+            <p:column headerText="Precio unitario" styleClass="header">
+                <h:outputText value="$#{itemDetalle.libro.precioLibro}" />
+            </p:column>
+            <p:column headerText="Cantidad">
+                <h:outputText value="#{itemDetalle.cantidad}" />
+            </p:column>
+            <p:column headerText="Total" styleClass="header">
+                <h:outputText value="$#{(ventaBean.detalle.cantidad*ventaBean.detalle.libro.precioLibro)}" />
+            </p:column>
+            <f:facet name="footer">
+                <p:column colspan="3">
+                    <h:outputText value="Total a pagar: " />
+                </p:column>
+                <p:column style="text-align: right;">
+                    <h:outputText value="$#{ventaBean.total}" />
+                </p:column>
+            </f:facet>
+        </p:dataTable>
+        <p:commandButton id="btnAgregar"
+                         value="Agregar libros a la compra"
+                         process="@this"
+                         action="#{ventaBean.prepararDetalle()}"
+                         update="msgs cmbLibro cantidad"
+                         oncomplete="PF('dlgLibro').show();" >
+        </p:commandButton>
+        <p:commandButton id="btnQuitar"
+                         value="Quitar libro de la lista"
+                         styleClass="ui-priority-primary"
+                         process="@this"
+                         action="#{ventaBean.quitarLibro()}"
+                         update="dtLibros btnQuitar btnLimpiar"
+                         disabled="#{empty ventaBean.detalle }">
+        </p:commandButton>
+        <p:commandButton id="btnLimpiar"
+                         value="Limpiar lista"
+                         styleClass="ui-priority-primary"
+                         process="@this"
+                         action="#{ventaBean.limpiarLibros()}"
+                         update="dtLibros btnLimpiar btnQuitar"
+                         disabled="#{empty ventaBean.venta.detVentaList }">
+        </p:commandButton>
+
+
+        <!-- Dialogo de ingreso de libros -->
+        <p:dialog header="Ingresar libro a la venta" widgetVar="dlgLibro" dynamic="true">
+            <h:panelGrid columns="2" columnClasses="label, value" >
+                <p:outputLabel value="Libro" for="cmbLibro" />
+                <h:selectOneMenu id="cmbLibro" value="#{ventaBean.detalle.libro}" >
+                    <f:ajax render="clientOnServerSide" execute="@this" />
+                    <f:selectItem itemLabel="Seleccione un libro" itemValue=""/>
+                    <f:selectItems value="#{libroController.itemsAvailableSelectOne}" var="libro" itemValue="#{libro}" itemLabel="#{libro.tituloLibro}" />
+                </h:selectOneMenu>
+                <p:outputLabel value="Cantidad" for="cantidad" />
+                <p:inputText id="cantidad" value="#{ventaBean.detalle.cantidad}" title="Cantidad" required="true" requiredMessage="Debe establecer la cantidad de libros.">
+                    <f:ajax render="clientOnServerSide" execute="@this" />
+                </p:inputText>
+                <p:commandButton id="btnAceptarLibro"
+                                 value="Aceptar"
+                                 action="#{ventaBean.confirmarCompra()}"
+                                 process="@this "
+                                 update="cmbLibro cantidad msgs librosForm dtLibros"
+                                 oncomplete="PF('dlgLibro').hide();"
+                                 />
+                <p:commandButton id="btnCancelar"
+                                 value="Cancelar"
+                                 process="@this"
+                                 action="#{ventaBean.anularDetalle()}"
+                                 update="msgs"
+                                 oncomplete="PF('dlgLibro').hide();"
+                                 />
+            </h:panelGrid>
+        </p:dialog>
+    </h:form>
+</html>

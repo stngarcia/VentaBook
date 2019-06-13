@@ -1,6 +1,7 @@
 package controlador.jsf;
 
 
+import ejb.AutorFacade;
 import controlador.jsf.util.JsfUtil;
 import controlador.jsf.util.JsfUtil.PersistAction;
 import java.io.Serializable;
@@ -24,7 +25,7 @@ import modelo.Autor;
 public class AutorController implements Serializable {
 
     @EJB
-    private controlador.jsf.AutorFacade ejbFacade;
+    private ejb.AutorFacade ejbFacade;
     private List<Autor> items = null;
     private Autor selected;
 
