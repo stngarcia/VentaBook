@@ -25,7 +25,7 @@ import modelo.DetVentaPK;
 import modelo.Libro;
 import modelo.Venta;
 import org.primefaces.event.SelectEvent;
-import utils.MensajesAMQ;
+import utils.PublicaMensaje;
 
 
 /**
@@ -110,17 +110,15 @@ public class ventaBean implements Serializable {
             detalle.setDetVentaPK(new DetVentaPK());
             detalle.setVenta(venta);
             detalle.setLibro(new Libro());
-            this.mostrarMensaje("Mostrando", detalle.getVenta().getIdVenta());
         } catch (Exception ex) {
-            this.mostrarMensaje("Error al crear" + ex.getMessage(), "");
-            ex.getStackTrace();
+            errorLog("Preparando venta", ex.getMessage());
         }
     }
 
 
     public void anularDetalle() {
         detalle = null;
-        this.mostrarMensaje("Cancelando", "Selección de libro cancelada.");
+        infoLog("Venta cancelada");
     }
 
 
@@ -132,9 +130,9 @@ public class ventaBean implements Serializable {
             detalle.setDetVentaPK(new DetVentaPK(venta.getIdVenta(), detalle.getLibro().getIdLibro()));
             this.venta.agregarDetalle(detalle);
             calcularTotal();
-            this.mostrarMensaje("Libro agregado", "Se agregaron " + detalle.getCantidad() + " libros " + detalle.getLibro().getTituloLibro() + " a la lista.");
+            infoLog("Se agregaron " + detalle.getCantidad() + " libros " + detalle.getLibro().getTituloLibro() + " a la lista.");
         } catch (Exception ex) {
-            this.mostrarMensaje("Error", ex.getMessage());
+            errorLog("Confirmando libro a vender", ex.getMessage());
         }
     }
 
@@ -170,11 +168,13 @@ public class ventaBean implements Serializable {
 
     public void grabarVenta() {
         if (venta == null) {
+            errorLog("Grabar venta", "El objeto venta esta nulo.");
             return;
         }
         getFacade().edit(venta);
-        mostrarMensaje("Venta registrada", "La venta ha sido registrada correctamente.");
         this.convertirVentaToJson();
+        this.enviarMensaje();
+        infoLog("Venta realizada correctamente.");
     }
 
 
@@ -191,19 +191,23 @@ public class ventaBean implements Serializable {
 
 
     private void convertirVentaToJson() {
-        VentaAggregate vta = new VentaAggregate();
         try {
-            this.traspasarVenta(vta);
-            this.traspasarFactura(vta);
-            this.traspasarDetalle(vta);
             ObjectMapper mapper = new ObjectMapper();
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            ventaJson = mapper.writeValueAsString(vta);
-            this.enviarMensaje();
+            ventaJson = mapper.writeValueAsString(realizarTraspasoVenta());
+            infoLog("Json creado correctamente");
         } catch (JsonProcessingException ex) {
-            ventaJson = "Error de mierda!!!!" + ex.getMessage();
+            errorLog("Generando json", ex.getMessage());
         }
-        mostrarMensaje("Json", ventaJson);
+    }
+
+
+    private VentaAggregate realizarTraspasoVenta() {
+        VentaAggregate vta = new VentaAggregate();
+        this.traspasarVenta(vta);
+        this.traspasarFactura(vta);
+        this.traspasarDetalle(vta);
+        return vta;
     }
 
 
@@ -248,13 +252,24 @@ public class ventaBean implements Serializable {
 
 
     private void enviarMensaje() {
-        MensajesAMQ miMensaje = MensajesAMQ.crear();
-        miMensaje.setMensaje(ventaJson);
         try {
-            miMensaje.enviarMensaje();
+            PublicaMensaje publicaMensaje = new PublicaMensaje("tcp://localhost:61616", "admin", "admin");
+            publicaMensaje.setup(false, true, "libros.facturas");
+            publicaMensaje.sendMessage("CUSTOMER");
+            infoLog("El mensaje fue enviado correctamente desde ventaBean.");
         } catch (JMSException ex) {
-            Logger.getLogger(ventaBean.class.getName()).log(Level.SEVERE, null, ex);
+            errorLog("Envia mensaje", ex.getMessage());
         }
+    }
+
+
+    private void errorLog(String dondePaso, String quePaso) {
+        Logger.getLogger(ventaBean.class.getName()).log(Level.SEVERE, null, dondePaso + quePaso);
+    }
+
+
+    private void infoLog(String mensaje) {
+        Logger.getLogger(ventaBean.class.getName()).log(Level.INFO, mensaje);
     }
 
 

@@ -69,24 +69,27 @@
                 <p:panelGrid style="margin-top:20px; margin-bottom: 20px; width:100%  ">
                     <f:facet name="header">
                         <p:row>
-                            <p:column>Ventas</p:column>
-                            <p:column></p:column>
-                            <p:column></p:column>
+                            <p:column>Registrar Venta</p:column>
+                            <p:column>Lista de ventas</p:column>
                         </p:row>
                     </f:facet>
                     <p:row>
                         <p:column>
-                            <ul>
-                                <li>Registro de ventas.</li>
-                                <li>Lista de ventas realizadas</li>
-                            </ul>
                             <p:button outcome="/ventabook/venta/nuevaVenta.xhtml"
                                       value="Registrar nueva venta"
                                       style="width:50%; margin:auto; text-align: center;">
                             </p:button>
                         </p:column>
-                        <p:column></p:column>
-                        <p:column></p:column>
+                        <p:column>
+                            <ul>
+                                <li>Visualizar lista de ventas realizadas</li>
+                                <li>Visualizar información de una venta.</li>
+                            </ul>
+                            <p:button outcome="/ventabook/venta/List.xhtml"
+                                      value="Ir a lista de ventas"
+                                      style="width:50%; margin:auto; text-align: center;">
+                            </p:button>
+                        </p:column>
                     </p:row>
                 </p:panelGrid>
             </h:form>

@@ -8,38 +8,81 @@
 
     <ui:composition>
 
-        <p:dialog id="VentaViewDlg" widgetVar="VentaViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewVentaTitle}">
+        <p:dialog id="VentaViewDlg" widgetVar="VentaViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Información de la venta">
             <h:form id="VentaViewForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{ventaController.selected != null}">
-                        <h:outputText value="#{bundle.ViewVentaLabel_idVenta}"/>
-                        <h:outputText value="#{ventaController.selected.idVenta}" title="#{bundle.ViewVentaTitle_idVenta}"/>
-                        <h:outputText value="#{bundle.ViewVentaLabel_fechaVenta}"/>
-                        <h:outputText value="#{ventaController.selected.fechaVenta}" title="#{bundle.ViewVentaTitle_fechaVenta}">
-                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                        </h:outputText>
-                        <h:outputText value="#{bundle.ViewVentaLabel_rutcliente}"/>
-                        <h:outputText value="#{ventaController.selected.rutcliente}" title="#{bundle.ViewVentaTitle_rutcliente}"/>
-                        <h:outputText value="#{bundle.ViewVentaLabel_nombrecliente}"/>
-                        <h:outputText value="#{ventaController.selected.nombrecliente}" title="#{bundle.ViewVentaTitle_nombrecliente}"/>
-                        <h:outputText value="#{bundle.ViewVentaLabel_razonsocialFactura}"/>
-                        <h:outputText value="#{ventaController.selected.razonsocialFactura}" title="#{bundle.ViewVentaTitle_razonsocialFactura}"/>
-                        <h:outputText value="#{bundle.ViewVentaLabel_rutFactura}"/>
-                        <h:outputText value="#{ventaController.selected.rutFactura}" title="#{bundle.ViewVentaTitle_rutFactura}"/>
-                        <h:outputText value="#{bundle.ViewVentaLabel_direccionFactura}"/>
-                        <h:outputText value="#{ventaController.selected.direccionFactura}" title="#{bundle.ViewVentaTitle_direccionFactura}"/>
-                        <h:outputText value="#{bundle.ViewVentaLabel_giroFactura}"/>
-                        <h:outputText value="#{ventaController.selected.giroFactura}" title="#{bundle.ViewVentaTitle_giroFactura}"/>
-                        <h:outputText value="#{bundle.ViewVentaLabel_contactoFactura}"/>
-                        <h:outputText value="#{ventaController.selected.contactoFactura}" title="#{bundle.ViewVentaTitle_contactoFactura}"/>
-                        <h:outputText value="#{bundle.ViewVentaLabel_ciudadFactura}"/>
-                        <h:outputText value="#{ventaController.selected.ciudadFactura}" title="#{bundle.ViewVentaTitle_ciudadFactura}"/>
-                        <h:outputText value="#{bundle.ViewVentaLabel_idTipoDoc}"/>
-                        <h:outputText value="#{ventaController.selected.idTipoDoc}" title="#{bundle.ViewVentaTitle_idTipoDoc}"/>
-                        <h:outputText value="#{bundle.ViewVentaLabel_idUsuario}"/>
-                        <h:outputText value="#{ventaController.selected.idUsuario}" title="#{bundle.ViewVentaTitle_idUsuario}"/>
-                    </p:panelGrid>
-                    <p:commandButton value="#{bundle.Close}" onclick="VentaViewDialog.hide()"/>
+                    <p:tabView rendered="#{ventaController.selected != null}">
+                        <!-- Panel de los datos de la venta -->
+                        <p:tab title="Datos de venta">
+                            <h:panelGrid columns="2" title="Datos de venta">
+                                <h:outputText value="Folio venta"/>
+                                <h:outputText value="#{ventaController.selected.idVenta}" title="Folio venta"/>
+                                <h:outputText value="Fecha venta"/>
+                                <h:outputText value="#{ventaController.selected.fechaVenta}" title="Fecha venta">
+                                    <f:convertDateTime pattern="dd-MM-yyyy" />
+                                </h:outputText>
+                                <h:outputText value="Rut cliente"/>
+                                <h:outputText value="#{ventaController.selected.rutcliente}" title="Rut cliente"/>
+                                <h:outputText value="Nombre cliente"/>
+                                <h:outputText value="#{ventaController.selected.nombrecliente}" title="Nombre cliente"/>
+                                <h:outputText value="Vendedor"/>
+                                <h:outputText value="#{ventaController.selected.idUsuario.nombreUsuario}" title="Vendedor"/>
+                                <h:outputText value="Documento emitido"/>
+                                <h:outputText value="#{ventaController.selected.idTipoDoc.nombreTipoDocumento}" title="Documento emitido"/>
+                            </h:panelGrid>
+                        </p:tab>
+
+                        <!-- Panel de los datos de factura -->
+                        <p:tab title="Datos de facturación">
+                            <h:panelGrid columns="2" >
+                                <h:outputText value="Razón social"/>
+                                <h:outputText value="#{ventaController.selected.razonsocialFactura}" title="Razón social"/>
+                                <h:outputText value="Rut empresa"/>
+                                <h:outputText value="#{ventaController.selected.rutFactura}" title="Rut empresa"/>
+                                <h:outputText value="Dirección"/>
+                                <h:outputText value="#{ventaController.selected.direccionFactura}" title="Dirección"/>
+                                <h:outputText value="Ciudad"/>
+                                <h:outputText value="#{ventaController.selected.ciudadFactura}" title="Ciudad"/>
+                                <h:outputText value="Giro empresa"/>
+                                <h:outputText value="#{ventaController.selected.giroFactura}" title="Giro empresa"/>
+                                <h:outputText value="Contacto"/>
+                                <h:outputText value="#{ventaController.selected.contactoFactura}" title="Contacto"/>
+                            </h:panelGrid>
+                        </p:tab>
+
+                        <!-- Panel de los libros -->
+                        <p:tab title="Libros">
+                            <h:panelGrid >
+                                <h:dataTable var="detalle" value="#{ventaController.selected.detVentaList}"  style="table-layout:  fixed;" >
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Libro"/>
+                                        </f:facet>
+                                        <h:outputText value="#{detalle.libro.tituloLibro}" />
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Precio unitario" />
+                                        </f:facet>
+                                        <h:outputText value="$#{detalle.libro.precioLibro}" style="float: right;"  />
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Cantidad" />
+                                        </f:facet>
+                                        <h:outputText value="#{detalle.cantidad}" style="float: right;" />
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Total por libro" />
+                                        </f:facet>
+                                        <h:outputText value="$#{(detalle.libro.precioLibro * detalle.cantidad)}" style="float:  right;" />
+                                    </h:column>
+                                </h:dataTable>
+                            </h:panelGrid>
+                        </p:tab>
+                    </p:tabView>
+                    <p:commandButton value="Cerrar" onclick="VentaViewDialog.hide()"/>
                 </h:panelGroup>
             </h:form>
         </p:dialog>

@@ -11,15 +11,18 @@
             <file>file:/F:/stnProyectos/integracionPlataformas/VentaBook/web/index.xhtml</file>
             <file>file:/F:/stnProyectos/integracionPlataformas/VentaBook/src/java/controlador/jsf/ventaBean.java</file>
             <file>file:/F:/stnProyectos/integracionPlataformas/VentaBook/src/conf/persistence.xml</file>
+            <file>file:/F:/stnProyectos/integracionPlataformas/VentaBook/web/ventabook/venta/List.xhtml</file>
             <file>file:/F:/stnProyectos/integracionPlataformas/VentaBook/web/templates/template.xhtml</file>
             <file>file:/F:/stnProyectos/integracionPlataformas/VentaBook/src/java/dto/DatosFacturacionDTO.java</file>
             <file>file:/F:/stnProyectos/integracionPlataformas/VentaBook/src/java/modelo/DetVenta.java</file>
             <file>file:/F:/stnProyectos/integracionPlataformas/VentaBook/src/java/dto/DetalleVentaDTO.java</file>
             <file>file:/F:/stnProyectos/integracionPlataformas/VentaBook/src/java/dto/VentaAggregate.java</file>
             <file>file:/F:/stnProyectos/integracionPlataformas/VentaBook/src/java/modelo/Venta.java</file>
+            <file>file:/F:/stnProyectos/integracionPlataformas/VentaBook/web/ventabook/venta/View.xhtml</file>
             <file>file:/F:/stnProyectos/integracionPlataformas/VentaBook/src/java/controlador/jsf/LibroController.java</file>
             <file>file:/F:/stnProyectos/integracionPlataformas/VentaBook/src/java/controlador/jsf/LibroService.java</file>
             <file>file:/F:/stnProyectos/integracionPlataformas/VentaBook/web/ventabook/venta/nuevaVenta.xhtml</file>
+            <file>file:/F:/stnProyectos/integracionPlataformas/VentaBook/src/java/utils/PublicaMensaje.java</file>
             <file>file:/F:/stnProyectos/integracionPlataformas/VentaBook/web/ventabook/inicio/inicio.xhtml</file>
         </group>
     </open-files>

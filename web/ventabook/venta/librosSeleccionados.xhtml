@@ -14,7 +14,7 @@
                      selectionMode="single"
                      selection="#{ventaBean.detalle}"
                      rowKey="#{itemDetalle.detVentaPK}"
-                     emptyMessage="No hay libros seleccionados}"
+                     emptyMessage="No hay libros seleccionados"
                      sortBy="#{itemDetalle.libro.tituloLibro}"
                      >
             <p:ajax event="rowSelect"   update="@(btnAgregar) @(btnQuitar) @(btnLimpiar)"/>
