@@ -1,0 +1,5 @@
+- Actualizar log4j a la version 2.11
+- agregar librerias de ActiveMQ5
+- Enviar datos de la venta a ActiveMQ
+- Agregar mensaje de confirmación luego de realizar una venta de libro.
+- Preparar la venta al presionar el boton de registro de venta.
