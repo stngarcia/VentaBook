@@ -9,7 +9,7 @@ import modelo.DetVenta;
 import modelo.TipoDoc;
 import modelo.Usuario;
 
-@Generated(value="EclipseLink-2.6.1.v20150605-rNA", date="2019-05-27T14:55:28")
+@Generated(value="EclipseLink-2.6.1.v20150605-rNA", date="2019-06-15T11:13:38")
 @StaticMetamodel(Venta.class)
 public class Venta_ { 
 

@@ -12,8 +12,6 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -25,6 +23,7 @@ import modelo.DetVentaPK;
 import modelo.Libro;
 import modelo.Venta;
 import org.primefaces.event.SelectEvent;
+import utils.LogClass;
 import utils.PublicaMensaje;
 
 
@@ -42,11 +41,13 @@ public class ventaBean implements Serializable {
     private DetVenta detalle;
     private long total = 0;
     private String ventaJson = "";
+    private utils.LogClass log;
 
     @ManagedProperty("#{LibroController}")
     private LibroController libroController;
 
     public ventaBean() {
+        log = LogClass.crearLog(ventaBean.class.getName());
     }
 
 
@@ -76,9 +77,9 @@ public class ventaBean implements Serializable {
     }
 
 
-    public Venta prepareCreate() {
+    public void prepareCreate() {
         venta = new Venta();
-        return venta;
+        log.info("Preparando nueva venta");
     }
 
 
@@ -110,15 +111,16 @@ public class ventaBean implements Serializable {
             detalle.setDetVentaPK(new DetVentaPK());
             detalle.setVenta(venta);
             detalle.setLibro(new Libro());
+            log.info("Venta " + (venta.getDetVentaList().size() + 1) + " preparada");
         } catch (Exception ex) {
-            errorLog("Preparando venta", ex.getMessage());
+            log.error("Preparando venta", ex.getMessage());
         }
     }
 
 
     public void anularDetalle() {
         detalle = null;
-        infoLog("Venta cancelada");
+        log.info("Venta cancelada");
     }
 
 
@@ -130,9 +132,9 @@ public class ventaBean implements Serializable {
             detalle.setDetVentaPK(new DetVentaPK(venta.getIdVenta(), detalle.getLibro().getIdLibro()));
             this.venta.agregarDetalle(detalle);
             calcularTotal();
-            infoLog("Se agregaron " + detalle.getCantidad() + " libros " + detalle.getLibro().getTituloLibro() + " a la lista.");
+            log.info("Se agregaron " + detalle.getCantidad() + " libros " + detalle.getLibro().getTituloLibro() + " a la lista.");
         } catch (Exception ex) {
-            errorLog("Confirmando libro a vender", ex.getMessage());
+            log.error("Confirmando libro a vender", ex.getMessage());
         }
     }
 
@@ -140,6 +142,7 @@ public class ventaBean implements Serializable {
     public void quitarLibro() {
         venta.removerDetalle(detalle);
         calcularTotal();
+        log.info("Quitando libro " + detalle.getLibro().getTituloLibro() + " de la lista de libros.");
         detalle = null;
     }
 
@@ -147,6 +150,7 @@ public class ventaBean implements Serializable {
     public void limpiarLibros() {
         venta.limpiarDetalles();
         calcularTotal();
+        log.info("Quitando " + venta.getDetVentaList().size() + " de la lista de libros a vender");
         detalle = null;
     }
 
@@ -168,13 +172,13 @@ public class ventaBean implements Serializable {
 
     public void grabarVenta() {
         if (venta == null) {
-            errorLog("Grabar venta", "El objeto venta esta nulo.");
+            log.error("Grabar venta", "El objeto venta esta nulo.");
             return;
         }
         getFacade().edit(venta);
         this.convertirVentaToJson();
         this.enviarMensaje();
-        infoLog("Venta realizada correctamente.");
+        log.info("Venta realizada correctamente.");
     }
 
 
@@ -195,9 +199,9 @@ public class ventaBean implements Serializable {
             ObjectMapper mapper = new ObjectMapper();
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             ventaJson = mapper.writeValueAsString(realizarTraspasoVenta());
-            infoLog("Json creado correctamente");
+            log.info("Json creado correctamente");
         } catch (JsonProcessingException ex) {
-            errorLog("Generando json", ex.getMessage());
+            log.error("Generando json", ex.getMessage());
         }
     }
 
@@ -212,8 +216,11 @@ public class ventaBean implements Serializable {
 
 
     private void traspasarVenta(VentaAggregate vta) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String miFecha = format.format(venta.getFechaVenta());
+
         vta.getVentaInfo().setIdVenta(venta.getIdVenta());
-        vta.getVentaInfo().setFechaVenta(venta.getFechaVenta());
+        vta.getVentaInfo().setFechaVenta(miFecha);
         vta.getVentaInfo().setRutUsuario(venta.getIdUsuario().getRutUsuario());
         vta.getVentaInfo().setNombreUsuario(venta.getIdUsuario().getNombreUsuario());
         vta.getVentaInfo().setRutCliente(venta.getRutcliente());
@@ -253,23 +260,12 @@ public class ventaBean implements Serializable {
 
     private void enviarMensaje() {
         try {
-            PublicaMensaje publicaMensaje = new PublicaMensaje("tcp://localhost:61616", "admin", "admin");
-            publicaMensaje.setup(false, true, "libros.facturas");
-            publicaMensaje.sendMessage("CUSTOMER");
-            infoLog("El mensaje fue enviado correctamente desde ventaBean.");
+            PublicaMensaje publicador = PublicaMensaje.crearPublicador();
+            publicador.enviar(ventaJson);
+            log.info("El mensaje fue enviado correctamente desde ventaBean.");
         } catch (JMSException ex) {
-            errorLog("Envia mensaje", ex.getMessage());
+            log.error("Envia mensaje", ex.getMessage());
         }
-    }
-
-
-    private void errorLog(String dondePaso, String quePaso) {
-        Logger.getLogger(ventaBean.class.getName()).log(Level.SEVERE, null, dondePaso + quePaso);
-    }
-
-
-    private void infoLog(String mensaje) {
-        Logger.getLogger(ventaBean.class.getName()).log(Level.INFO, mensaje);
     }
 
 

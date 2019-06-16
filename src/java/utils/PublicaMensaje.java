@@ -1,15 +1,13 @@
 package utils;
 
 import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
+import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
-
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.RedeliveryPolicy;
 
 
 /**
@@ -17,104 +15,91 @@ import org.apache.activemq.RedeliveryPolicy;
  */
 public class PublicaMensaje {
 
-    private static final String ACTION_ID_HEADER = "actionId";
-    private static final String ACTION_HEADER = "action";
-    private ConnectionFactory connFactory;
-    private Connection connection;
-    private Session session;
-    private Destination destination;
-    private MessageProducer msgProducer;
-    private String activeMqBrokerUri;
-    private String username;
-    private String password;
+    private final LogClass log;
+    private final String QUEUE = "libros.facturas";
+    private final String URL = "tcp://localhost:61616";
+    Connection conexion;
+    Session sesion;
+    Destination destino;
+    MessageProducer productor;
 
-    public PublicaMensaje(final String activeMqBrokerUri, final String username, final String password) {
-        super();
-        this.activeMqBrokerUri = activeMqBrokerUri;
-        this.username = username;
-        this.password = password;
+    private PublicaMensaje() {
+        log = LogClass.crearLog(PublicaMensaje.class.getName());
     }
 
 
-    public void setup(final boolean transacted, final boolean isDestinationTopic, final String destinationName)
-            throws JMSException {
-        setConnectionFactory(activeMqBrokerUri, username, password);
-        setConnection();
-        setSession(transacted);
-        setDdestination(isDestinationTopic, destinationName);
-        setMsgProducer();
+    public static PublicaMensaje crearPublicador() {
+        return new PublicaMensaje();
     }
 
 
-    public void close() throws JMSException {
-        if (msgProducer != null) {
-            msgProducer.close();
-            msgProducer = null;
+    private void setConexion() throws JMSException {
+        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(URL);
+        conexion = connectionFactory.createConnection();
+        conexion.start();
+        log.info("Creando conexion de ActiveMQ");
+    }
+
+
+    private void setSesion(boolean transaccional) throws JMSException {
+        sesion = conexion.createSession(transaccional, Session.AUTO_ACKNOWLEDGE);
+        log.info("Estableciendo la sesion de ActiveMq");
+    }
+
+
+    private void setDestino() throws JMSException {
+        destino = sesion.createQueue(QUEUE);
+        log.info("Estableciendo cola de destino en" + QUEUE);
+    }
+
+
+    private void setProductor() throws JMSException {
+        productor = sesion.createProducer(destino);
+        productor.setDeliveryMode(DeliveryMode.PERSISTENT);
+        log.info("Estableciendo el productor de mensajes.");
+    }
+
+
+    private TextMessage crearMensaje(String textoMensaje) throws JMSException {
+        log.info("Estableciendo el mensaje");
+        log.info(textoMensaje);
+        return sesion.createTextMessage(textoMensaje);
+    }
+
+
+    private void configurarMensaje() throws JMSException {
+        setConexion();
+        setSesion(false);
+        setDestino();
+        setProductor();
+        log.info("ActiveMQ configurado");
+    }
+
+
+    public void enviar(String textoMensaje) throws JMSException {
+        configurarMensaje();
+        productor.send(crearMensaje(textoMensaje));
+        log.info("Enviando el mensaje");
+        cerrarConexion();
+    }
+
+
+    private void cerrarConexion() throws JMSException {
+        if (productor != null) {
+            productor.close();
+            productor = null;
+            log.info("Productor cerrado.");
         }
-        if (session != null) {
-            session.close();
-            session = null;
+        if (sesion != null) {
+            sesion.close();
+            sesion = null;
+            log.info("Sesion cerrada.");
         }
-        if (connection != null) {
-            connection.close();
-            connection = null;
+        if (conexion != null) {
+            conexion.close();
+            conexion = null;
+            log.info("Conexion cerrada.");
         }
-    }
-
-
-    public void commit(final boolean transacted) throws JMSException {
-        if (transacted) {
-            session.commit();
-        }
-    }
-
-
-    public void sendMessage(final String actionVal) throws JMSException {
-        TextMessage textMessage = buildTextMessageWithProperty(actionVal);
-        msgProducer.send(destination, textMessage);
-    }
-
-
-    private TextMessage buildTextMessageWithProperty(final String txtMessage) throws JMSException {
-        TextMessage textMessage = session.createTextMessage(txtMessage);
-        return textMessage;
-    }
-
-
-    private void setDdestination(final boolean isDestinationTopic, final String destinationName) throws JMSException {
-        if (isDestinationTopic) {
-            destination = session.createTopic(destinationName);
-        } else {
-            destination = session.createQueue(destinationName);
-        }
-    }
-
-
-    private void setMsgProducer() throws JMSException {
-        msgProducer = session.createProducer(destination);
-    }
-
-
-    private void setSession(final boolean transacted) throws JMSException {
-        // transacted=true for better performance to push message in batch mode
-        session = connection.createSession(transacted, Session.AUTO_ACKNOWLEDGE);
-    }
-
-
-    private void setConnection() throws JMSException {
-        connection = connFactory.createConnection();
-        connection.start();
-    }
-
-
-    private void setConnectionFactory(final String activeMqBrokerUri, final String username, final String password) {
-        connFactory = new ActiveMQConnectionFactory(username, password, activeMqBrokerUri);
-        ((ActiveMQConnectionFactory) connFactory).setUseAsyncSend(true);
-        RedeliveryPolicy policy = ((ActiveMQConnectionFactory) connFactory).getRedeliveryPolicy();
-        policy.setInitialRedeliveryDelay(500);
-        policy.setBackOffMultiplier(2);
-        policy.setUseExponentialBackOff(true);
-        policy.setMaximumRedeliveries(2);
     }
 
 

@@ -75,10 +75,14 @@
                     </f:facet>
                     <p:row>
                         <p:column>
-                            <p:button outcome="/ventabook/venta/nuevaVenta.xhtml"
-                                      value="Registrar nueva venta"
-                                      style="width:50%; margin:auto; text-align: center;">
-                            </p:button>
+                            <h:form id="formRegistrar">
+                                <p:commandButton id="btnRegistrarVenta"
+                                                 actionListener="#{ventaBean.prepareCreate()}"
+                                                 action="/ventabook/venta/nuevaVenta.xhtml"
+                                                 ajax="false"
+                                                 value="Registrar nueva venta">
+                                </p:commandButton>
+                            </h:form>
                         </p:column>
                         <p:column>
                             <ul>

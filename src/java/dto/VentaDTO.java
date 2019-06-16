@@ -1,7 +1,6 @@
 package dto;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 /**
@@ -10,7 +9,7 @@ import java.util.Date;
 public class VentaDTO implements Serializable {
 
     private String idVenta;
-    private Date fechaVenta;
+    private String fechaVenta;
     private String rutUsuario;
     private String nombreUsuario;
     private String rutCliente;
@@ -35,12 +34,12 @@ public class VentaDTO implements Serializable {
     }
 
 
-    public Date getFechaVenta() {
+    public String getFechaVenta() {
         return fechaVenta;
     }
 
 
-    public void setFechaVenta(Date fechaVenta) {
+    public void setFechaVenta(String fechaVenta) {
         this.fechaVenta = fechaVenta;
     }
 

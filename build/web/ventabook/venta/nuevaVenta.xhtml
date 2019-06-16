@@ -106,18 +106,14 @@
 
             </p:tabView>
 
-            <h:panelGrid columns="1">
-                <h:outputText value="#{ventaBean.ventaJson}" />
-            </h:panelGrid>
-
             <h:form id="botonesForm">
                 <p:growl id="msgGrabar" showDetail="true" />
                 <hPanelGrid columns="2">
                     <p:commandButton id="btnGrabar"
                                      process="@this"
                                      actionListener="#{ventaBean.grabarVenta()}"
-                                     immediate="true"
                                      action="/ventabook/inicio/inicio.xhtml"
+                                     immediate="true"
                                      update="msgGrabar botonesForm"
                                      value="Grabar venta">
                     </p:commandButton>
@@ -128,8 +124,6 @@
                                      styleClass="ui-priority-primary"/>
                 </hPanelGrid>
             </h:form>
-
-            <!-- Dialogo de confirmacion -->
 
         </ui:define>
     </ui:composition>

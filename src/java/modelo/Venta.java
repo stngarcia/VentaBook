@@ -95,6 +95,7 @@ public class Venta implements Serializable {
     public Venta() {
         this.idVenta = UUID.randomUUID().toString();
         this.fechaVenta = new Date();
+        this.limpiarDatosFacturacion();
         this.detVentaList = new ArrayList<>();
     }
 
